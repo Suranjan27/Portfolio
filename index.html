@@ -11,12 +11,19 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Syne:wght@800&display=swap');
         
+        :root {
+            --fluid-easing: cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-speed: 400ms;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background-color 0.6s var(--fluid-easing), color 0.6s var(--fluid-easing);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
+            overflow-x: hidden;
+            width: 100%;
         }
 
         /* Target headers for the new font style */
@@ -26,9 +33,12 @@
             text-transform: uppercase;
         }
 
-        /* Glass Panel Transitions */
-        .glass-panel-dark, .glass-panel-light, button, a, .photo-frame {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Hardware Accelerated Transitions */
+        .glass-panel-dark, .glass-panel-light, button, a, .photo-frame, .footer-social-btn {
+            transition: all var(--transition-speed) var(--fluid-easing);
+            backface-visibility: hidden;
+            perspective: 1000px;
+            transform: translate3d(0, 0, 0);
         }
 
         .glass-panel-dark {
@@ -47,23 +57,25 @@
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
         }
 
-        /* Page Transition Logic */
+        /* Page Transition Logic - Mobile Optimized */
         .page-transition {
-            transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1), transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity var(--transition-speed) var(--fluid-easing), 
+                        transform var(--transition-speed) var(--fluid-easing);
+            will-change: opacity, transform;
         }
 
         .hidden-page {
             display: none !important;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translate3d(0, 15px, 0);
         }
 
         .active-page {
             opacity: 1;
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
         }
 
-        /* Ribbon Styles */
+        /* Ribbon Styles - Optimized for Mobile GPU */
         .ribbon-container {
             position: fixed;
             left: 50%;
@@ -73,6 +85,7 @@
             overflow: hidden;
             white-space: nowrap;
             display: flex;
+            will-change: transform;
         }
 
         .ribbon-text {
@@ -80,31 +93,32 @@
             line-height: 1;
             display: inline-block;
             padding-right: 4rem;
-            will-change: transform;
             opacity: 0.05;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
         }
 
         .marquee-std {
-            animation: marqueeStd 25s linear infinite;
+            animation: marqueeStd 30s linear infinite;
         }
 
         .marquee-rev {
-            animation: marqueeRev 25s linear infinite;
+            animation: marqueeRev 30s linear infinite;
         }
 
         @keyframes marqueeStd {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
         }
 
         @keyframes marqueeRev {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
+            0% { transform: translate3d(-50%, 0, 0); }
+            100% { transform: translate3d(0, 0, 0); }
         }
 
         /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
         ::-webkit-scrollbar-track {
             background: transparent;
@@ -114,22 +128,26 @@
             border-radius: 10px;
         }
 
-        /* Global Hover Utilities */
-        .hover-lift:hover {
-            transform: translateY(-4px);
-        }
-        
-        .hover-scale:hover {
-            transform: scale(1.02);
+        /* Touch-friendly active states */
+        button:active, a:active {
+            transform: scale(0.95) translate3d(0, 0, 0);
         }
 
-        /* Safe area adjustments for mobile (Android/iOS) */
-        nav {
-            padding-top: calc(1rem + env(safe-area-inset-top, 0px));
+        .mobile-menu-active {
+            overscroll-behavior: contain;
+            overflow: hidden;
         }
-        
-        #global-footer {
-            padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+
+        /* Hero Highlight Transitions */
+        .hero-highlight {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Image Smoothness */
+        img {
+            backface-visibility: hidden;
+            -webkit-user-drag: none;
         }
     </style>
     <script>
@@ -151,20 +169,20 @@
         }
     </script>
 </head>
-<body class="bg-deepTeal text-slate-200 overflow-x-hidden min-h-screen flex flex-col" id="body">
+<body class="bg-deepTeal text-slate-200 min-h-screen flex flex-col" id="body">
 
     <!-- INTERACT RIBBONS -->
-    <div class="ribbon-container" style="top: 25%; transform: translate(-50%, -50%) rotate(3deg);">
+    <div class="ribbon-container" style="top: 25%; transform: translate3d(-50%, -50%, 0) rotate(3deg);">
         <div class="ribbon-text marquee-std scrolling-ribbon" style="color: white;">
             SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • 
         </div>
     </div>
-    <div class="ribbon-container" style="top: 50%; transform: translate(-50%, -50%) rotate(-5deg);">
+    <div class="ribbon-container" style="top: 50%; transform: translate3d(-50%, -50%, 0) rotate(-5deg);">
         <div class="ribbon-text marquee-rev scrolling-ribbon" style="color: white;">
             SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • 
         </div>
     </div>
-    <div class="ribbon-container" style="top: 75%; transform: translate(-50%, -50%) rotate(2deg);">
+    <div class="ribbon-container" style="top: 75%; transform: translate3d(-50%, -50%, 0) rotate(2deg);">
         <div class="ribbon-text marquee-std scrolling-ribbon" style="color: white;">
             SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • 
         </div>
@@ -210,7 +228,7 @@
         </div>
 
         <!-- MOBILE OVERLAY MENU -->
-        <div id="mobile-menu" class="hidden absolute top-full left-4 right-4 mt-4 p-6 md:p-8 border rounded-[1.5rem] md:rounded-[2.5rem] backdrop-blur-3xl shadow-3xl flex-col gap-6 md:hidden bg-deepTeal/95 border-white/10 opacity-0 transform -translate-y-4 transition-all duration-400 ease-out">
+        <div id="mobile-menu" class="hidden absolute top-full left-4 right-4 mt-4 p-6 md:p-8 border rounded-[1.5rem] md:rounded-[2.5rem] backdrop-blur-3xl shadow-3xl flex-col gap-6 md:hidden bg-deepTeal/95 border-white/10 opacity-0 transform translate3d(0, -10px, 0) transition-all duration-400">
             <!-- Mobile Links generated by JS -->
         </div>
     </nav>
@@ -239,7 +257,7 @@
                     </h1>
                     
                     <p class="max-w-xl text-base md:text-xl font-medium mb-10 md:mb-12 text-slate-400" id="hero-desc">
-                        I build systems that bridge the gap between <span class="text-white hero-highlight font-bold">High-Level Web</span> and <span class="text-white hero-highlight font-bold">Low-Level Hardware</span>.
+                        ECE fresher driven by curiosity, learning, and building smart solutions that make a difference.
                     </p>
                     
                     <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
@@ -260,7 +278,7 @@
                             <div class="overflow-hidden rounded-[2.5rem] w-56 h-72 md:w-72 md:h-[24rem] bg-darkTeal/20">
                                 <img src="assets/hero.jpg" 
                                      alt="Suranjan Sengupta" 
-                                     class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
+                                     class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
                                      onerror="this.src='https://ui-avatars.com/api/?name=Suranjan+Sengupta&background=233D4C&color=FD802E&size=512'">
                             </div>
                             <div id="photo-accent" class="absolute -bottom-4 -right-4 w-14 h-14 bg-orangeAccent rounded-2xl flex items-center justify-center shadow-2xl shadow-orangeAccent/40 animate-bounce transition-all duration-500">
@@ -273,10 +291,10 @@
         </section>
 
         <!-- Dynamic sections container -->
-        <section id="page-Projects" class="hidden-page flex-grow w-full max-w-6xl mx-auto px-6 py-4"></section>
-        <section id="page-Experience" class="hidden-page flex-grow w-full max-w-4xl mx-auto px-6 py-4"></section>
-        <section id="page-Skills" class="hidden-page flex-grow w-full max-w-6xl mx-auto px-6 py-4"></section>
-        <section id="page-Credentials" class="hidden-page flex-grow w-full max-w-6xl mx-auto px-6 py-4"></section>
+        <section id="page-Projects" class="hidden-page flex-grow w-full max-w-6xl mx-auto px-6 py-4 page-transition"></section>
+        <section id="page-Experience" class="hidden-page flex-grow w-full max-w-4xl mx-auto px-6 py-4 page-transition"></section>
+        <section id="page-Skills" class="hidden-page flex-grow w-full max-w-6xl mx-auto px-6 py-4 page-transition"></section>
+        <section id="page-Credentials" class="hidden-page flex-grow w-full max-w-6xl mx-auto px-6 py-4 page-transition"></section>
 
         <!-- GLOBAL PAGE FOOTER -->
         <footer id="global-footer" class="w-full max-w-7xl mx-auto px-6 py-4 mt-6 border-t border-white/10 transition-all duration-700">
@@ -311,7 +329,7 @@
     <div class="fixed bottom-4 md:bottom-8 right-4 md:right-6 pointer-events-none z-40 hidden md:flex flex-col items-end gap-2">
         <span class="text-[10px] font-black uppercase tracking-widest text-white/20" id="progress-label">Progress</span>
         <div class="w-32 h-1.5 rounded-full overflow-hidden backdrop-blur-md bg-white/10" id="progress-container">
-            <div id="progress-bar" class="h-full bg-orangeAccent transition-all duration-500 shadow-[0_0_10px_#FD802E]" style="width: 20%;"></div>
+            <div id="progress-bar" class="h-full bg-orangeAccent transition-all duration-700 shadow-[0_0_15px_currentColor]" style="width: 20%;"></div>
         </div>
     </div>
 
@@ -373,7 +391,7 @@
             renderCredentials();
             renderFooter(); 
             lucide.createIcons();
-            window.addEventListener('scroll', handleScroll);
+            window.addEventListener('scroll', handleScroll, { passive: true });
         };
 
         // --- CORE FUNCTIONS ---
@@ -381,10 +399,10 @@
             if (page === currentPage) return;
             const main = document.getElementById('main-content');
             
-            // Soft Fade Out
+            // Perform fluid transition
             if (main) {
                 main.style.opacity = '0';
-                main.style.transform = 'translateY(10px)';
+                main.style.transform = 'translate3d(0, 10px, 0)';
             }
             
             setTimeout(() => {
@@ -406,18 +424,17 @@
                 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 
-                // Soft Fade In
-                setTimeout(() => {
+                requestAnimationFrame(() => {
                     if (main) {
                         main.style.opacity = '1';
-                        main.style.transform = 'translateY(0)';
+                        main.style.transform = 'translate3d(0, 0, 0)';
                     }
-                }, 50);
+                });
 
                 isMenuOpen = false;
                 toggleMenu(false);
                 lucide.createIcons();
-            }, 400);
+            }, 350);
         }
 
         function toggleTheme() {
@@ -485,17 +502,21 @@
             isMenuOpen = typeof force === 'boolean' ? force : !isMenuOpen;
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('menu-icon');
+            const body = document.getElementById('body');
+
             if (menu) {
                 if (isMenuOpen) {
+                    body.classList.add('mobile-menu-active');
                     menu.classList.replace('hidden', 'flex');
-                    setTimeout(() => {
+                    requestAnimationFrame(() => {
                         menu.classList.replace('opacity-0', 'opacity-100');
-                        menu.classList.replace('-translate-y-4', 'translate-y-0');
-                    }, 10);
+                        menu.classList.replace('translate3d(0, -10px, 0)', 'translate3d(0, 0, 0)');
+                    });
                     if (icon) icon.setAttribute('data-lucide', 'x');
                 } else {
+                    body.classList.remove('mobile-menu-active');
                     menu.classList.replace('opacity-100', 'opacity-0');
-                    menu.classList.replace('translate-y-0', '-translate-y-4');
+                    menu.classList.replace('translate3d(0, 0, 0)', 'translate3d(0, -10px, 0)');
                     setTimeout(() => menu.classList.replace('flex', 'hidden'), 400);
                     if (icon) icon.setAttribute('data-lucide', 'menu');
                 }
@@ -511,19 +532,36 @@
                 if (window.scrollY > 20) navbar.classList.add('shadow-2xl'); 
                 else navbar.classList.remove('shadow-2xl'); 
             }
+            
+            // Performant ribbon physics
             const ribbons = document.querySelectorAll('.scrolling-ribbon');
             if (ribbons.length) {
                 const scrollDiff = Math.abs(window.scrollY - lastScrollY);
-                ribbonSpeedMultiplier = Math.min(10, 1 + (scrollDiff / 5));
-                ribbons.forEach(r => r.style.animationDuration = `${25 / ribbonSpeedMultiplier}s`);
+                ribbonSpeedMultiplier = Math.min(12, 1 + (scrollDiff / 4));
+                ribbons.forEach(r => r.style.animationDuration = `${30 / ribbonSpeedMultiplier}s`);
+                
                 clearTimeout(window.ribbonDecayTimer);
                 window.ribbonDecayTimer = setTimeout(() => { 
-                    ribbons.forEach(r => r.style.transition = 'animation-duration 0.8s ease-out');
-                    ribbons.forEach(r => r.style.animationDuration = `25s`); 
-                }, 150);
+                    ribbons.forEach(r => {
+                        r.style.transition = 'animation-duration 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+                        r.style.animationDuration = `30s`; 
+                    });
+                }, 100);
                 lastScrollY = window.scrollY;
             }
         }
+
+        function updateProgressBar() {
+            const progress = ((navLinks.findIndex(l => l.id === currentPage) + 1) / navLinks.length) * 100;
+            const bar = document.getElementById('progress-bar');
+            if (bar) {
+                bar.style.width = `${progress}%`;
+                bar.className = `h-full ${currentTheme === 'dark' ? 'bg-limeAccent' : 'bg-orangeAccent'} transition-all duration-700 shadow-[0_0_15px_currentColor]`;
+            }
+        }
+
+        // --- RENDER FUNCTIONS REMAIN SAME AS PREVIOUS ---
+        // (Maintaining the logic while ensuring classes are GPU optimized)
 
         function renderNav() {
             const container = document.getElementById('nav-links-container');
@@ -761,15 +799,6 @@
             });
             const progressContainer = document.getElementById('progress-container');
             if(progressContainer) progressContainer.className = `w-32 h-1.5 rounded-full overflow-hidden backdrop-blur-md transition-colors duration-500 ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'}`;
-        }
-
-        function updateProgressBar() {
-            const progress = ((navLinks.findIndex(l => l.id === currentPage) + 1) / navLinks.length) * 100;
-            const bar = document.getElementById('progress-bar');
-            if (bar) {
-                bar.style.width = `${progress}%`;
-                bar.className = `h-full ${currentTheme === 'dark' ? 'bg-limeAccent' : 'bg-orangeAccent'} transition-all duration-700 shadow-[0_0_15px_currentColor]`;
-            }
         }
     </script>
 </body>
