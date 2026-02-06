@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -13,8 +13,7 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            transition: background-color 0.5s ease, color 0.5s ease;
-            /* Mac/Retina & High-End Android Smoothing */
+            transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
@@ -25,6 +24,11 @@
             font-family: 'Syne', sans-serif;
             font-weight: 800;
             text-transform: uppercase;
+        }
+
+        /* Glass Panel Transitions */
+        .glass-panel-dark, .glass-panel-light, button, a, .photo-frame {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass-panel-dark {
@@ -43,17 +47,20 @@
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
         }
 
+        /* Page Transition Logic */
         .page-transition {
-            transition: opacity 0.3s ease;
+            transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1), transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .hidden-page {
             display: none !important;
             opacity: 0;
+            transform: translateY(10px);
         }
 
         .active-page {
             opacity: 1;
+            transform: translateY(0);
         }
 
         /* Ribbon Styles */
@@ -77,12 +84,10 @@
             opacity: 0.05;
         }
 
-        /* Standard Direction */
         .marquee-std {
             animation: marqueeStd 25s linear infinite;
         }
 
-        /* Reverse Direction */
         .marquee-rev {
             animation: marqueeRev 25s linear infinite;
         }
@@ -107,6 +112,15 @@
         ::-webkit-scrollbar-thumb {
             background: #FD802E;
             border-radius: 10px;
+        }
+
+        /* Global Hover Utilities */
+        .hover-lift:hover {
+            transform: translateY(-4px);
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.02);
         }
 
         /* Safe area adjustments for mobile (Android/iOS) */
@@ -139,7 +153,7 @@
 </head>
 <body class="bg-deepTeal text-slate-200 overflow-x-hidden min-h-screen flex flex-col" id="body">
 
-    <!-- INTERACT RIBBONS (Multiple tracks, vice-versa movement) -->
+    <!-- INTERACT RIBBONS -->
     <div class="ribbon-container" style="top: 25%; transform: translate(-50%, -50%) rotate(3deg);">
         <div class="ribbon-text marquee-std scrolling-ribbon" style="color: white;">
             SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • 
@@ -158,38 +172,37 @@
 
     <!-- GLOBAL BACKGROUND ELEMENTS -->
     <div class="fixed inset-0 pointer-events-none -z-10">
-        <div id="bg-glow-1" class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors bg-limeAccent/10"></div>
-        <div id="bg-glow-2" class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors bg-deepTeal/30"></div>
+        <div id="bg-glow-1" class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-limeAccent/10"></div>
+        <div id="bg-glow-2" class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-deepTeal/30"></div>
     </div>
 
     <!-- NAVIGATION BAR -->
     <nav class="fixed top-0 left-0 w-full z-50 pt-4 md:pt-8 px-4 md:px-6">
         <div class="max-w-7xl mx-auto">
-            <div id="navbar" class="flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all bg-black/30 border-white/10 backdrop-blur-2xl shadow-2xl shadow-black/50">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('Home')">
-                    <div id="nav-logo" class="w-9 h-9 md:w-10 md:h-10 bg-limeAccent rounded-xl flex items-center justify-center font-black text-deepTeal shadow-xl shadow-limeAccent/40">S</div>
-                    <span class="font-black tracking-[0.2em] uppercase text-xs md:text-sm block">Suranjan</span>
+            <div id="navbar" class="flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all duration-500 bg-black/30 border-white/10 backdrop-blur-2xl shadow-2xl shadow-black/50">
+                <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('Home')">
+                    <div id="nav-logo" class="w-9 h-9 md:w-10 md:h-10 bg-limeAccent rounded-xl flex items-center justify-center font-black text-deepTeal shadow-xl shadow-limeAccent/40 group-hover:scale-110 transition-transform duration-300">S</div>
+                    <span class="font-black tracking-[0.2em] uppercase text-xs md:text-sm block group-hover:translate-x-1 transition-transform duration-300">Suranjan</span>
                 </div>
 
                 <div class="hidden md:flex items-center gap-1">
                     <div id="nav-links-container" class="flex items-center gap-1">
                         <!-- Links generated by JS -->
                     </div>
-                    <!-- Desktop CTA highlighted button -->
                     <div id="desktop-cta-container" class="ml-2">
                         <!-- Generated by JS -->
                     </div>
                     <div class="h-4 w-px bg-white/10 mx-4" id="nav-divider"></div>
-                    <button id="theme-toggle" onclick="toggleTheme()" class="p-2 rounded-xl transition-all hover:scale-110 text-limeAccent">
+                    <button id="theme-toggle" onclick="toggleTheme()" class="p-2 rounded-xl transition-all duration-300 hover:scale-110 hover:bg-white/5 text-limeAccent">
                         <i data-lucide="sun" id="theme-icon"></i>
                     </button>
                 </div>
 
                 <div class="flex items-center gap-4 md:hidden">
-                    <button id="theme-toggle-mobile" onclick="toggleTheme()" class="p-2 text-limeAccent">
+                    <button id="theme-toggle-mobile" onclick="toggleTheme()" class="p-2 text-limeAccent active:scale-90 transition-transform">
                         <i data-lucide="sun" id="theme-icon-mobile"></i>
                     </button>
-                    <button class="text-white transition-colors" id="menu-btn" onclick="toggleMenu()">
+                    <button class="text-white transition-all duration-300 active:scale-90" id="menu-btn" onclick="toggleMenu()">
                         <i data-lucide="menu" id="menu-icon"></i>
                     </button>
                 </div>
@@ -197,7 +210,7 @@
         </div>
 
         <!-- MOBILE OVERLAY MENU -->
-        <div id="mobile-menu" class="hidden absolute top-full left-4 right-4 mt-4 p-6 md:p-8 border rounded-[1.5rem] md:rounded-[2.5rem] backdrop-blur-3xl shadow-3xl flex-col gap-6 md:hidden bg-deepTeal/95 border-white/10">
+        <div id="mobile-menu" class="hidden absolute top-full left-4 right-4 mt-4 p-6 md:p-8 border rounded-[1.5rem] md:rounded-[2.5rem] backdrop-blur-3xl shadow-3xl flex-col gap-6 md:hidden bg-deepTeal/95 border-white/10 opacity-0 transform -translate-y-4 transition-all duration-400 ease-out">
             <!-- Mobile Links generated by JS -->
         </div>
     </nav>
@@ -213,7 +226,7 @@
                 <div class="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
                     <div class="mb-6 flex flex-col items-center lg:items-start">
                         <span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">01 / HOME</span>
-                        <div id="hero-line" class="h-px w-12 bg-limeAccent"></div>
+                        <div id="hero-line" class="h-px w-12 bg-limeAccent transition-all duration-700"></div>
                     </div>
 
                     <div class="inline-block mb-6 md:mb-8 px-4 py-1 rounded-full text-[9px] md:text-[10px] font-black tracking-[0.2em] uppercase border animate-pulse backdrop-blur-md bg-white/5 border-white/10 text-limeAccent" id="hero-badge">
@@ -230,10 +243,10 @@
                     </p>
                     
                     <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                        <button id="hero-btn-primary" onclick="navigateTo('Projects')" class="w-full sm:w-auto px-10 py-4 bg-limeAccent text-deepTeal font-black rounded-full shadow-2xl shadow-limeAccent/20 hover:scale-105 transition-transform uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-2">
+                        <button id="hero-btn-primary" onclick="navigateTo('Projects')" class="w-full sm:w-auto px-10 py-4 bg-limeAccent text-deepTeal font-black rounded-full shadow-2xl shadow-limeAccent/20 hover:scale-105 hover:shadow-limeAccent/40 transition-all duration-300 uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-2">
                             View Projects <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </button>
-                        <a id="hero-cv-btn" href="https://drive.google.com/file/d/1gbRUxpDOE_sWssaCQsstIy4tbzdyUP01/view?usp=drive_link" target="_blank" class="w-full sm:w-auto px-10 py-4 font-black rounded-full border transition-all uppercase tracking-widest text-[10px] md:text-xs backdrop-blur-md bg-white/5 border-white/10 text-white flex items-center justify-center gap-2 hover:bg-white/10 active:scale-95">
+                        <a id="hero-cv-btn" href="https://drive.google.com/file/d/1gbRUxpDOE_sWssaCQsstIy4tbzdyUP01/view?usp=drive_link" target="_blank" class="w-full sm:w-auto px-10 py-4 font-black rounded-full border transition-all duration-300 uppercase tracking-widest text-[10px] md:text-xs backdrop-blur-md bg-white/5 border-white/10 text-white flex items-center justify-center gap-2 hover:bg-white/10 hover:scale-105 active:scale-95">
                             Download CV <i data-lucide="download" class="w-4 h-4"></i>
                         </a>
                     </div>
@@ -241,19 +254,16 @@
 
                 <!-- Right: Photo Section -->
                 <div class="lg:col-span-5 flex justify-center items-center">
-                    <div class="relative group scale-[0.85] xs:scale-90 lg:scale-100 transition-transform duration-500">
-                        <!-- Photo Frame Decor -->
-                        <div id="photo-glow" class="absolute -inset-4 bg-limeAccent/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-                        <div class="relative p-3 rounded-[3rem] border border-white/10 glass-panel-dark transition-all duration-500 hover:scale-[1.03] photo-frame">
+                    <div class="relative group scale-[0.85] xs:scale-90 lg:scale-100 transition-transform duration-700 ease-out">
+                        <div id="photo-glow" class="absolute -inset-4 bg-limeAccent/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>
+                        <div class="relative p-3 rounded-[3rem] border border-white/10 glass-panel-dark transition-all duration-700 hover:scale-[1.03] photo-frame">
                             <div class="overflow-hidden rounded-[2.5rem] w-56 h-72 md:w-72 md:h-[24rem] bg-darkTeal/20">
-                                <!-- Photo Placeholder -->
                                 <img src="assets/hero.jpg" 
                                      alt="Suranjan Sengupta" 
-                                     class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                                     class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
                                      onerror="this.src='https://ui-avatars.com/api/?name=Suranjan+Sengupta&background=233D4C&color=FD802E&size=512'">
                             </div>
-                            <!-- Small accent element -->
-                            <div id="photo-accent" class="absolute -bottom-4 -right-4 w-14 h-14 bg-orangeAccent rounded-2xl flex items-center justify-center shadow-2xl shadow-orangeAccent/40 animate-bounce">
+                            <div id="photo-accent" class="absolute -bottom-4 -right-4 w-14 h-14 bg-orangeAccent rounded-2xl flex items-center justify-center shadow-2xl shadow-orangeAccent/40 animate-bounce transition-all duration-500">
                                 <i data-lucide="circuit-board" class="text-white w-6 h-6"></i>
                             </div>
                         </div>
@@ -269,7 +279,7 @@
         <section id="page-Credentials" class="hidden-page flex-grow w-full max-w-6xl mx-auto px-6 py-4"></section>
 
         <!-- GLOBAL PAGE FOOTER -->
-        <footer id="global-footer" class="w-full max-w-7xl mx-auto px-6 py-4 mt-6 border-t border-white/10 transition-all duration-500">
+        <footer id="global-footer" class="w-full max-w-7xl mx-auto px-6 py-4 mt-6 border-t border-white/10 transition-all duration-700">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex flex-col items-center md:items-start text-center md:text-left max-w-md">
                     <h3 class="text-sm font-black tracking-tighter uppercase mb-2">Let's build something.</h3>
@@ -279,13 +289,13 @@
                 </div>
                 
                 <div class="flex items-center gap-3">
-                    <a href="https://github.com/Suranjan27" target="_blank" class="p-2.5 rounded-xl glass-panel-dark transition-all hover:scale-110 hover:text-orangeAccent footer-social-btn">
+                    <a href="https://github.com/Suranjan27" target="_blank" class="p-2.5 rounded-xl glass-panel-dark hover:scale-110 footer-social-btn flex items-center justify-center">
                         <i data-lucide="github" class="w-4 h-4"></i>
                     </a>
-                    <a href="https://www.linkedin.com/in/suranjan-sengupta-63985a221" target="_blank" class="p-2.5 rounded-xl glass-panel-dark transition-all hover:scale-110 hover:text-orangeAccent footer-social-btn">
+                    <a href="https://www.linkedin.com/in/suranjan-sengupta-63985a221" target="_blank" class="p-2.5 rounded-xl glass-panel-dark hover:scale-110 footer-social-btn flex items-center justify-center">
                         <i data-lucide="linkedin" class="w-4 h-4"></i>
                     </a>
-                    <a href="https://x.com/SuranjanSeng10" target="_blank" class="p-2.5 rounded-xl glass-panel-dark transition-all hover:scale-110 hover:text-orangeAccent footer-social-btn flex items-center justify-center">
+                    <a href="https://x.com/SuranjanSeng10" target="_blank" class="p-2.5 rounded-xl glass-panel-dark hover:scale-110 footer-social-btn flex items-center justify-center">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932zm-1.292 19.494h2.039L6.486 3.24H4.298l13.311 17.407z"/></svg>
                     </a>
                 </div>
@@ -297,11 +307,11 @@
         </footer>
     </main>
 
-    <!-- PERSISTENT OVERLAY UI (Progress Indicator) -->
+    <!-- PROGRESS INDICATOR -->
     <div class="fixed bottom-4 md:bottom-8 right-4 md:right-6 pointer-events-none z-40 hidden md:flex flex-col items-end gap-2">
         <span class="text-[10px] font-black uppercase tracking-widest text-white/20" id="progress-label">Progress</span>
         <div class="w-32 h-1.5 rounded-full overflow-hidden backdrop-blur-md bg-white/10" id="progress-container">
-            <div id="progress-bar" class="h-full bg-orangeAccent transition-all duration-300 shadow-[0_0_10px_#FD802E]" style="width: 20%;"></div>
+            <div id="progress-bar" class="h-full bg-orangeAccent transition-all duration-500 shadow-[0_0_10px_#FD802E]" style="width: 20%;"></div>
         </div>
     </div>
 
@@ -370,7 +380,13 @@
         function navigateTo(page) {
             if (page === currentPage) return;
             const main = document.getElementById('main-content');
-            if (main) main.style.opacity = '0';
+            
+            // Soft Fade Out
+            if (main) {
+                main.style.opacity = '0';
+                main.style.transform = 'translateY(10px)';
+            }
+            
             setTimeout(() => {
                 const prevPage = document.getElementById(`page-${currentPage}`);
                 if (prevPage) prevPage.classList.add('hidden-page');
@@ -388,12 +404,20 @@
                 renderNav();
                 updateProgressBar();
                 
-                window.scrollTo(0, 0);
-                if (main) main.style.opacity = '1';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Soft Fade In
+                setTimeout(() => {
+                    if (main) {
+                        main.style.opacity = '1';
+                        main.style.transform = 'translateY(0)';
+                    }
+                }, 50);
+
                 isMenuOpen = false;
                 toggleMenu(false);
                 lucide.createIcons();
-            }, 300);
+            }, 400);
         }
 
         function toggleTheme() {
@@ -412,40 +436,46 @@
 
             if (currentTheme === 'light') {
                 if (body) body.className = "bg-cream text-darkTeal overflow-x-hidden min-h-screen flex flex-col";
-                if (navbar) navbar.className = "flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all bg-white/40 border-white backdrop-blur-2xl shadow-lg text-darkTeal";
-                if (menuBtn) menuBtn.className = "text-darkTeal transition-colors";
-                if (menu) menu.className = "absolute top-full left-4 right-4 mt-4 p-6 md:p-8 border rounded-[1.5rem] md:rounded-[2.5rem] backdrop-blur-3xl shadow-3xl flex-col gap-6 md:hidden bg-white/90 border-white" + (isMenuOpen ? " flex" : " hidden");
-                if (bgGlow1) bgGlow1.className = "absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors bg-orangeAccent/10";
-                if (bgGlow2) bgGlow2.className = "absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors bg-darkTeal/5";
+                if (navbar) navbar.className = "flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all duration-500 bg-white/40 border-white backdrop-blur-2xl shadow-lg text-darkTeal";
+                if (menuBtn) menuBtn.className = "text-darkTeal transition-colors duration-500";
+                if (menu) {
+                    menu.classList.add('bg-white/90', 'border-white');
+                    menu.classList.remove('bg-deepTeal/95', 'border-white/10');
+                }
+                if (bgGlow1) bgGlow1.className = "absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-orangeAccent/10";
+                if (bgGlow2) bgGlow2.className = "absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-darkTeal/5";
                 ribbons.forEach(r => r.style.color = "#233D4C");
-                if (logo) logo.className = "w-9 h-9 md:w-10 md:h-10 bg-orangeAccent rounded-xl flex items-center justify-center font-black text-white shadow-xl shadow-orangeAccent/40";
+                if (logo) logo.className = "w-9 h-9 md:w-10 md:h-10 bg-orangeAccent rounded-xl flex items-center justify-center font-black text-white shadow-xl shadow-orangeAccent/40 transition-all duration-500";
                 
                 const icon = document.getElementById('theme-icon');
                 if (icon) icon.setAttribute('data-lucide', 'moon');
                 const iconMobile = document.getElementById('theme-icon-mobile');
                 if (iconMobile) iconMobile.setAttribute('data-lucide', 'moon');
                 
-                if (themeToggle) themeToggle.className = "p-2 rounded-xl transition-all hover:scale-110 text-orangeAccent";
-                if (themeToggleMobile) themeToggleMobile.className = "p-2 text-orangeAccent";
-                if (progressBar) progressBar.className = "h-full bg-orangeAccent transition-all duration-300 shadow-[0_0_10px_#FD802E]";
+                if (themeToggle) themeToggle.className = "p-2 rounded-xl transition-all duration-300 hover:scale-110 hover:bg-black/5 text-orangeAccent";
+                if (themeToggleMobile) themeToggleMobile.className = "p-2 text-orangeAccent transition-colors duration-500";
+                if (progressBar) progressBar.className = "h-full bg-orangeAccent transition-all duration-500 shadow-[0_0_10px_#FD802E]";
             } else {
                 if (body) body.className = "bg-deepTeal text-slate-200 overflow-x-hidden min-h-screen flex flex-col";
-                if (navbar) navbar.className = "flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all bg-black/30 border-white/10 backdrop-blur-2xl shadow-2xl shadow-black/50 text-white";
-                if (menuBtn) menuBtn.className = "text-white transition-colors";
-                if (menu) menu.className = "absolute top-full left-4 right-4 mt-4 p-6 md:p-8 border rounded-[1.5rem] md:rounded-[2.5rem] backdrop-blur-3xl shadow-3xl flex-col gap-6 md:hidden bg-deepTeal/95 border-white/10" + (isMenuOpen ? " flex" : " hidden");
-                if (bgGlow1) bgGlow1.className = "absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors bg-limeAccent/10";
-                if (bgGlow2) bgGlow2.className = "absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors bg-deepTeal/30";
+                if (navbar) navbar.className = "flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all duration-500 bg-black/30 border-white/10 backdrop-blur-2xl shadow-2xl shadow-black/50 text-white";
+                if (menuBtn) menuBtn.className = "text-white transition-colors duration-500";
+                if (menu) {
+                    menu.classList.remove('bg-white/90', 'border-white');
+                    menu.classList.add('bg-deepTeal/95', 'border-white/10');
+                }
+                if (bgGlow1) bgGlow1.className = "absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-limeAccent/10";
+                if (bgGlow2) bgGlow2.className = "absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-deepTeal/30";
                 ribbons.forEach(r => r.style.color = "white");
-                if (logo) logo.className = "w-9 h-9 md:w-10 md:h-10 bg-limeAccent rounded-xl flex items-center justify-center font-black text-deepTeal shadow-xl shadow-limeAccent/40";
+                if (logo) logo.className = "w-9 h-9 md:w-10 md:h-10 bg-limeAccent rounded-xl flex items-center justify-center font-black text-deepTeal shadow-xl shadow-limeAccent/40 transition-all duration-500";
 
                 const icon = document.getElementById('theme-icon');
                 if (icon) icon.setAttribute('data-lucide', 'sun');
                 const iconMobile = document.getElementById('theme-icon-mobile');
                 if (iconMobile) iconMobile.setAttribute('data-lucide', 'sun');
                 
-                if (themeToggle) themeToggle.className = "p-2 rounded-xl transition-all hover:scale-110 text-limeAccent";
-                if (themeToggleMobile) themeToggleMobile.className = "p-2 text-limeAccent";
-                if (progressBar) progressBar.className = "h-full bg-limeAccent transition-all duration-300 shadow-[0_0_10px_#E0FF4F]";
+                if (themeToggle) themeToggle.className = "p-2 rounded-xl transition-all duration-300 hover:scale-110 hover:bg-white/5 text-limeAccent";
+                if (themeToggleMobile) themeToggleMobile.className = "p-2 text-limeAccent transition-colors duration-500";
+                if (progressBar) progressBar.className = "h-full bg-limeAccent transition-all duration-500 shadow-[0_0_10px_#E0FF4F]";
             }
             
             renderNav(); renderProjects(); renderExperience(); renderSkills(); renderCredentials(); renderFooter(); renderHero(); lucide.createIcons();
@@ -458,9 +488,15 @@
             if (menu) {
                 if (isMenuOpen) {
                     menu.classList.replace('hidden', 'flex');
+                    setTimeout(() => {
+                        menu.classList.replace('opacity-0', 'opacity-100');
+                        menu.classList.replace('-translate-y-4', 'translate-y-0');
+                    }, 10);
                     if (icon) icon.setAttribute('data-lucide', 'x');
                 } else {
-                    menu.classList.replace('flex', 'hidden');
+                    menu.classList.replace('opacity-100', 'opacity-0');
+                    menu.classList.replace('translate-y-0', '-translate-y-4');
+                    setTimeout(() => menu.classList.replace('flex', 'hidden'), 400);
                     if (icon) icon.setAttribute('data-lucide', 'menu');
                 }
             }
@@ -471,14 +507,20 @@
 
         function handleScroll() {
             const navbar = document.getElementById('navbar');
-            if (navbar) { if (window.scrollY > 20) navbar.classList.add('shadow-2xl'); else navbar.classList.remove('shadow-2xl'); }
+            if (navbar) { 
+                if (window.scrollY > 20) navbar.classList.add('shadow-2xl'); 
+                else navbar.classList.remove('shadow-2xl'); 
+            }
             const ribbons = document.querySelectorAll('.scrolling-ribbon');
             if (ribbons.length) {
                 const scrollDiff = Math.abs(window.scrollY - lastScrollY);
                 ribbonSpeedMultiplier = Math.min(10, 1 + (scrollDiff / 5));
                 ribbons.forEach(r => r.style.animationDuration = `${25 / ribbonSpeedMultiplier}s`);
                 clearTimeout(window.ribbonDecayTimer);
-                window.ribbonDecayTimer = setTimeout(() => { ribbons.forEach(r => r.style.animationDuration = `25s`); }, 150);
+                window.ribbonDecayTimer = setTimeout(() => { 
+                    ribbons.forEach(r => r.style.transition = 'animation-duration 0.8s ease-out');
+                    ribbons.forEach(r => r.style.animationDuration = `25s`); 
+                }, 150);
                 lastScrollY = window.scrollY;
             }
         }
@@ -491,10 +533,10 @@
             
             if (container) {
                 container.innerHTML = navLinks.map(link => `
-                    <button onclick="navigateTo('${link.id}')" class="px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] transition-all rounded-xl ${
+                    <button onclick="navigateTo('${link.id}')" class="px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] transition-all duration-300 rounded-xl hover:scale-105 ${
                         currentPage === link.id 
                           ? (isDark ? 'text-limeAccent bg-limeAccent/10' : 'text-orangeAccent bg-orangeAccent/10')
-                          : isDark ? 'text-slate-400 hover:text-white' : 'text-darkTeal/60 hover:text-darkTeal'
+                          : isDark ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-darkTeal/60 hover:text-darkTeal hover:bg-black/5'
                     }">
                       ${link.name}
                     </button>
@@ -504,7 +546,7 @@
             if (ctaContainer) {
                 const ctaStyle = isDark ? 'bg-limeAccent text-deepTeal shadow-limeAccent/20' : 'bg-orangeAccent text-white shadow-orangeAccent/20';
                 ctaContainer.innerHTML = `
-                    <a href="mailto:aec.ece.suranjansengupta.2026.083@gmail.com" class="ml-2 px-5 py-2 text-[10px] font-black uppercase tracking-[0.15em] transition-all rounded-xl shadow-xl hover:scale-105 active:scale-95 ${ctaStyle}">
+                    <a href="mailto:aec.ece.suranjansengupta.2026.083@gmail.com" class="ml-2 px-5 py-2 text-[10px] font-black uppercase tracking-[0.15em] transition-all duration-300 rounded-xl shadow-xl hover:scale-105 hover:brightness-110 active:scale-95 ${ctaStyle}">
                       Get in Touch
                     </a>
                 `;
@@ -512,49 +554,38 @@
 
             if (mobileContainer) {
                 mobileContainer.innerHTML = navLinks.map(link => `
-                    <button onclick="navigateTo('${link.id}')" class="text-2xl font-black text-left uppercase tracking-tighter transition-all ${
+                    <button onclick="navigateTo('${link.id}')" class="text-2xl font-black text-left uppercase tracking-tighter transition-all duration-300 hover:translate-x-2 ${
                       currentPage === link.id ? (isDark ? 'text-limeAccent' : 'text-orangeAccent') : (isDark ? 'text-white' : 'text-darkTeal')
                     }">
                         ${link.name}
                     </button>
                 `).join('') + `
                     <div class="h-px w-full ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'}"></div>
-                    <a href="mailto:aec.ece.suranjansengupta.2026.083@gmail.com" class="${isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white'} py-4 rounded-2xl text-center font-black uppercase tracking-widest text-xs">
+                    <a href="mailto:aec.ece.suranjansengupta.2026.083@gmail.com" class="${isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white'} py-4 rounded-2xl text-center font-black uppercase tracking-widest text-xs transition-all duration-300 hover:scale-[1.02] active:scale-95">
                       Get in Touch
                     </a>
                 `;
             }
             const divider = document.getElementById('nav-divider');
-            if (divider) divider.className = `h-4 w-px ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'} mx-4`;
+            if (divider) divider.className = `h-4 w-px ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'} mx-4 transition-colors duration-500`;
         }
 
         function renderHero() {
             const isDark = currentTheme === 'dark';
             const badge = document.getElementById('hero-badge');
-            if(badge) badge.className = `inline-block mb-6 md:mb-8 px-4 py-1 rounded-full text-[9px] md:text-[10px] font-black tracking-[0.2em] uppercase border animate-pulse backdrop-blur-md ${isDark ? 'bg-white/5 border-white/10 text-limeAccent' : 'bg-orangeAccent/10 border-orangeAccent/20 text-darkTeal'}`;
+            if(badge) badge.className = `inline-block mb-6 md:mb-8 px-4 py-1 rounded-full text-[9px] md:text-[10px] font-black tracking-[0.2em] uppercase border animate-pulse backdrop-blur-md transition-all duration-500 ${isDark ? 'bg-white/5 border-white/10 text-limeAccent' : 'bg-orangeAccent/10 border-orangeAccent/20 text-darkTeal'}`;
             const title = document.getElementById('hero-title');
-            if(title) title.className = `text-5xl md:text-7xl xl:text-7xl font-black tracking-tighter mb-6 md:mb-8 leading-[1.1] lg:leading-[0.9] ${isDark ? 'text-slate-200' : 'text-darkTeal'}`;
+            if(title) title.className = `text-5xl md:text-7xl xl:text-7xl font-black tracking-tighter mb-6 md:mb-8 leading-[1.1] lg:leading-[0.9] transition-colors duration-500 ${isDark ? 'text-slate-200' : 'text-darkTeal'}`;
             const span = document.getElementById('hero-span');
-            if(span) span.className = isDark ? "text-transparent bg-clip-text bg-gradient-to-r from-limeAccent to-white" : "text-orangeAccent";
+            if(span) span.className = isDark ? "text-transparent bg-clip-text bg-gradient-to-r from-limeAccent to-white" : "text-orangeAccent transition-colors duration-500";
             const desc = document.getElementById('hero-desc');
-            if(desc) desc.className = `max-w-xl text-base md:text-xl font-medium mb-10 md:mb-12 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}`;
+            if(desc) desc.className = `max-w-xl text-base md:text-xl font-medium mb-10 md:mb-12 transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}`;
             const btnPrimary = document.getElementById('hero-btn-primary');
-            if(btnPrimary) btnPrimary.className = `w-full sm:w-auto px-10 py-4 ${isDark ? 'bg-limeAccent text-deepTeal shadow-limeAccent/20' : 'bg-orangeAccent text-white shadow-orangeAccent/30'} font-black rounded-full shadow-2xl hover:scale-105 transition-transform uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-2`;
-            const cvBtn = document.getElementById('hero-cv-btn');
-            if(cvBtn) cvBtn.className = `w-full sm:w-auto px-10 py-4 font-black rounded-full border transition-all uppercase tracking-widest text-[10px] md:text-xs backdrop-blur-md ${isDark ? 'bg-white/5 border-white/10 text-white hover:bg-white/10' : 'bg-white/60 border-white text-darkTeal hover:bg-white/80'} flex items-center justify-center gap-2 active:scale-95`;
+            if(btnPrimary) btnPrimary.className = `w-full sm:w-auto px-10 py-4 ${isDark ? 'bg-limeAccent text-deepTeal shadow-limeAccent/20' : 'bg-orangeAccent text-white shadow-orangeAccent/30'} font-black rounded-full shadow-2xl hover:scale-105 hover:brightness-110 transition-all duration-300 uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-2`;
             const hLine = document.getElementById('hero-line');
-            if(hLine) hLine.className = `h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'}`;
-            document.querySelectorAll('.hero-highlight').forEach(el => el.className = `hero-highlight ${isDark ? 'text-white font-bold' : 'text-darkTeal font-bold underline decoration-orangeAccent/30'}`);
-            document.querySelectorAll('.section-indicator').forEach(el => el.className = `text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator ${isDark ? 'text-slate-200' : 'text-darkTeal'}`);
-            const photoFrame = document.querySelector('.photo-frame');
-            if(photoFrame) photoFrame.className = `relative p-3 rounded-[3rem] border transition-all duration-500 hover:scale-[1.03] photo-frame ${isDark ? 'glass-panel-dark border-white/10' : 'glass-panel-light border-[#233D4C]/20'}`;
-            const pGlow = document.getElementById('photo-glow');
-            if(pGlow) pGlow.className = `absolute -inset-4 ${isDark ? 'bg-limeAccent/10' : 'bg-orangeAccent/20'} blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`;
-            const pAccent = document.getElementById('photo-accent');
-            if(pAccent) {
-                pAccent.className = `absolute -bottom-4 -right-4 w-14 h-14 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} rounded-2xl flex items-center justify-center shadow-2xl ${isDark ? 'shadow-limeAccent/40' : 'shadow-orangeAccent/40'} animate-bounce`;
-                const icon = pAccent.querySelector('i'); if (icon) icon.className = isDark ? 'text-deepTeal w-6 h-6' : 'text-white w-6 h-6';
-            }
+            if(hLine) hLine.className = `h-px w-12 transition-all duration-500 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'}`;
+            document.querySelectorAll('.hero-highlight').forEach(el => el.className = `hero-highlight transition-all duration-500 ${isDark ? 'text-white font-bold' : 'text-darkTeal font-bold underline decoration-orangeAccent/30'}`);
+            document.querySelectorAll('.section-indicator').forEach(el => el.className = `text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator transition-colors duration-500 ${isDark ? 'text-slate-200' : 'text-darkTeal'}`);
         }
 
         function renderProjects() {
@@ -566,28 +597,28 @@
             page.innerHTML = `
                 <div class="mb-12">
                     <span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">02 / PROJECTS</span>
-                    <div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line"></div>
+                    <div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line transition-all duration-500"></div>
                 </div>
                 <div class="flex flex-col md:flex-row items-baseline gap-4 mb-12 md:mb-16">
                     <h2 class="text-4xl md:text-5xl font-black tracking-tighter">PROJECTS</h2>
-                    <div class="h-px flex-grow ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'} page-divider"></div>
-                    <div class="flex gap-1 p-1 rounded-xl border ${isDark ? 'bg-white/5 border-white/5' : 'bg-white/40 border-white'}" id="tabs-container">
-                        ${['All', 'Web', 'Hardware'].map(t => `<button onclick="setTab('${t}')" class="px-3 md:px-4 py-1.5 rounded-lg text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === t ? (isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white') : (isDark ? 'text-slate-400' : 'text-darkTeal/60')} shadow-lg">${t}</button>`).join('')}
+                    <div class="h-px flex-grow ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'} page-divider transition-colors duration-500"></div>
+                    <div class="flex gap-1 p-1 rounded-xl border ${isDark ? 'bg-white/5 border-white/5' : 'bg-white/40 border-white'} transition-all duration-500" id="tabs-container">
+                        ${['All', 'Web', 'Hardware'].map(t => `<button onclick="setTab('${t}')" class="px-3 md:px-4 py-1.5 rounded-lg text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${activeTab === t ? (isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white') : (isDark ? 'text-slate-400 hover:text-white' : 'text-darkTeal/60 hover:text-darkTeal')} shadow-lg">${t}</button>`).join('')}
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     ${filtered.map(p => `
-                        <div class="group relative rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-10 border transition-all duration-500 overflow-hidden ${glass} hover:scale-[1.02] active:scale-[0.98]">
-                            <div class="absolute -right-20 -top-20 w-80 h-80 bg-gradient-to-br ${p.color} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        <div class="group relative rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-10 border transition-all duration-500 overflow-hidden ${glass} hover:scale-[1.02] hover:-translate-y-1">
+                            <div class="absolute -right-20 -top-20 w-80 h-80 bg-gradient-to-br ${p.color} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
                             <div class="relative z-10">
-                                <span class="text-[9px] md:text-[10px] font-black tracking-widest uppercase mb-4 block ${isDark ? 'text-limeAccent' : p.accent}">${p.category}</span>
+                                <span class="text-[9px] md:text-[10px] font-black tracking-widest uppercase mb-4 block transition-colors duration-500 ${isDark ? 'text-limeAccent' : p.accent}">${p.category}</span>
                                 <div class="flex items-center justify-between mb-4">
                                     <h3 class="text-3xl md:text-4xl font-black group-hover:translate-x-2 transition-transform duration-500">${p.title}</h3>
-                                    ${p.link ? `<a href="${p.link}" target="_blank" class="p-2 rounded-xl transition-all ${isDark ? 'bg-white/10 text-limeAccent hover:bg-limeAccent hover:text-deepTeal' : 'bg-orangeAccent/10 text-orangeAccent hover:bg-orangeAccent hover:text-white'}"><i data-lucide="external-link" class="w-5 h-5"></i></a>` : ''}
+                                    ${p.link ? `<a href="${p.link}" target="_blank" class="p-2 rounded-xl transition-all duration-300 hover:scale-110 ${isDark ? 'bg-white/10 text-limeAccent hover:bg-limeAccent hover:text-deepTeal' : 'bg-orangeAccent/10 text-orangeAccent hover:bg-orangeAccent hover:text-white'}"><i data-lucide="external-link" class="w-5 h-5"></i></a>` : ''}
                                 </div>
-                                <p class="mb-8 max-w-sm text-sm md:text-base ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">${p.description}</p>
+                                <p class="mb-8 max-w-sm text-sm md:text-base transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">${p.description}</p>
                                 <div class="flex flex-wrap gap-2">
-                                    ${p.tags.map(t => `<span class="px-3 py-1 text-[9px] font-black uppercase rounded-full border ${isDark ? 'bg-white/5 border-white/10' : 'bg-white/40 border-white/60'}">${t}</span>`).join('')}
+                                    ${p.tags.map(t => `<span class="px-3 py-1 text-[9px] font-black uppercase rounded-full border transition-all duration-500 ${isDark ? 'bg-white/5 border-white/10' : 'bg-white/40 border-white/60'}">${t}</span>`).join('')}
                                 </div>
                             </div>
                         </div>
@@ -605,26 +636,26 @@
             page.innerHTML = `
                 <div class="mb-12">
                     <span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">03 / EXPERIENCE</span>
-                    <div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line"></div>
+                    <div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line transition-all duration-500"></div>
                 </div>
                 <div class="text-center mb-12 md:mb-16">
                     <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-4">EXPERIENCE</h2>
-                    <p class="${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">My professional internships and industry involvement.</p>
+                    <p class="transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">My professional internships and industry involvement.</p>
                 </div>
                 <div class="space-y-6 md:space-y-8">
                     ${experiences.map(exp => `
-                        <div class="p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border flex flex-col md:flex-row gap-6 md:gap-8 items-start transition-all hover:translate-x-2 ${glass}">
-                            <div class="${isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white'} p-4 rounded-2xl shadow-xl flex-shrink-0">
+                        <div class="p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border flex flex-col md:flex-row gap-6 md:gap-8 items-start transition-all duration-500 hover:scale-[1.01] hover:translate-x-2 ${glass}">
+                            <div class="${isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white'} p-4 rounded-2xl shadow-xl flex-shrink-0 transition-all duration-500">
                                 <i data-lucide="briefcase"></i>
                             </div>
                             <div class="w-full">
-                                <span class="text-[9px] md:text-[10px] font-black ${isDark ? 'text-limeAccent' : 'text-orangeAccent'} tracking-widest uppercase">${exp.date}</span>
+                                <span class="text-[9px] md:text-[10px] font-black tracking-widest uppercase transition-colors duration-500 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}">${exp.date}</span>
                                 <div class="flex items-center justify-between mt-2 mb-1">
                                     <h4 class="text-2xl md:text-3xl font-black">${exp.company}</h4>
-                                    ${exp.link ? `<a href="${exp.link}" target="_blank" class="p-2 rounded-xl transition-all ${isDark ? 'bg-white/10 text-limeAccent hover:bg-limeAccent hover:text-deepTeal' : 'bg-orangeAccent/10 text-orangeAccent hover:bg-orangeAccent hover:text-white'}"><i data-lucide="external-link" class="w-5 h-5"></i></a>` : ''}
+                                    ${exp.link ? `<a href="${exp.link}" target="_blank" class="p-2 rounded-xl transition-all duration-300 hover:scale-110 ${isDark ? 'bg-white/10 text-limeAccent hover:bg-limeAccent hover:text-deepTeal' : 'bg-orangeAccent/10 text-orangeAccent hover:bg-orangeAccent hover:text-white'}"><i data-lucide="external-link" class="w-5 h-5"></i></a>` : ''}
                                 </div>
-                                <p class="font-bold text-xs md:text-sm mb-4 ${isDark ? 'text-white/60' : 'text-darkTeal/60'}">${exp.role}</p>
-                                <p class="text-sm md:text-base ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">${exp.desc}</p>
+                                <p class="font-bold text-xs md:text-sm mb-4 transition-colors duration-500 ${isDark ? 'text-white/60' : 'text-darkTeal/60'}">${exp.role}</p>
+                                <p class="text-sm md:text-base transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">${exp.desc}</p>
                             </div>
                         </div>
                     `).join('')}
@@ -637,7 +668,42 @@
             const page = document.getElementById('page-Skills'); if (!page || currentPage !== 'Skills') return;
             const isDark = currentTheme === 'dark';
             const glass = isDark ? 'glass-panel-dark' : 'glass-panel-light';
-            page.innerHTML = `<div class="mb-12"><span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">04 / SKILLS</span><div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line"></div></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12"><div><h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-4 md:mb-6">TECH STACK</h2><p class="${isDark ? 'text-slate-400' : 'text-darkTeal/70'} mb-6">Expertise across software and embedded systems.</p><div class="p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border font-mono text-[10px] md:text-xs ${isDark ? 'bg-black/40 border-white/5 backdrop-blur-xl' : 'bg-darkTeal text-cream shadow-2xl shadow-darkTeal/40'}"><i data-lucide="terminal" class="${isDark ? 'text-limeAccent' : 'text-orangeAccent'} mb-4"></i><p class="mb-1 text-slate-300">> loading_profile: Suranjan</p><p class="mb-1 text-slate-300">> status: open_to_internships</p><p class="mb-1 text-slate-300">> location: Asansol, IN</p><div class="mt-4 h-1 w-full bg-white/10 rounded-full overflow-hidden"><div class="h-full ${isDark ? 'bg-limeAccent shadow-[0_0_10px_#E0FF4F]' : 'bg-orangeAccent shadow-[0_0_10px_#FD802E]'} w-[85%]"></div></div></div></div><div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">${skillGroups.map(s => `<div class="p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border transition-all hover:scale-[1.02] ${glass}"><div class="flex items-center gap-3 mb-6"><div class="p-2 rounded-lg ${isDark ? 'bg-limeAccent/10 text-limeAccent' : 'bg-orangeAccent/10 text-orangeAccent'}"><i data-lucide="${s.icon}" class="w-4 h-4"></i></div><h4 class="font-black uppercase tracking-widest text-[10px] md:text-xs">${s.cat}</h4></div><div class="flex flex-wrap gap-2">${s.items.map(it => `<div class="px-3 md:px-4 py-1.5 md:py-2 rounded-xl text-[10px] md:text-xs font-bold border ${isDark ? 'bg-white/5 border-white/10' : 'bg-white/40 border-white'}">${it}</div>`).join('')}</div></div>`).join('')}</div></div>`;
+            page.innerHTML = `
+                <div class="mb-12">
+                    <span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">04 / SKILLS</span>
+                    <div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line transition-all duration-500"></div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
+                    <div>
+                        <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-4 md:mb-6">TECH STACK</h2>
+                        <p class="transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'} mb-6">Expertise across software and embedded systems.</p>
+                        <div class="p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border font-mono text-[10px] md:text-xs transition-all duration-500 ${isDark ? 'bg-black/40 border-white/5 backdrop-blur-xl' : 'bg-darkTeal text-cream shadow-2xl shadow-darkTeal/40'}">
+                            <i data-lucide="terminal" class="mb-4 transition-colors duration-500 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}"></i>
+                            <p class="mb-1 text-slate-300">> loading_profile: Suranjan</p>
+                            <p class="mb-1 text-slate-300">> status: open_to_internships</p>
+                            <p class="mb-1 text-slate-300">> location: Asansol, IN</p>
+                            <div class="mt-4 h-1 w-full bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full transition-all duration-1000 ${isDark ? 'bg-limeAccent shadow-[0_0_10px_#E0FF4F]' : 'bg-orangeAccent shadow-[0_0_10px_#FD802E]'} w-[85%]"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        ${skillGroups.map(s => `
+                            <div class="p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 ${glass}">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="p-2 rounded-lg transition-colors duration-500 ${isDark ? 'bg-limeAccent/10 text-limeAccent' : 'bg-orangeAccent/10 text-orangeAccent'}">
+                                        <i data-lucide="${s.icon}" class="w-4 h-4"></i>
+                                    </div>
+                                    <h4 class="font-black uppercase tracking-widest text-[10px] md:text-xs">${s.cat}</h4>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    ${s.items.map(it => `<div class="px-3 md:px-4 py-1.5 md:py-2 rounded-xl text-[10px] md:text-xs font-bold border transition-all duration-500 ${isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white/40 border-white hover:bg-white/60'}">${it}</div>`).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
             lucide.createIcons();
         }
 
@@ -645,7 +711,41 @@
             const page = document.getElementById('page-Credentials'); if (!page || currentPage !== 'Credentials') return;
             const isDark = currentTheme === 'dark';
             const glass = isDark ? 'glass-panel-dark' : 'glass-panel-light';
-            page.innerHTML = `<div class="mb-12"><span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">05 / CREDENTIALS</span><div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line"></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"><div class="p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border transition-all hover:scale-[1.02] ${glass} flex flex-col"><i data-lucide="graduation-cap" class="${isDark ? 'text-limeAccent' : 'text-orangeAccent'} mb-6 w-8 h-8 md:w-10 md:h-10"></i><h2 class="text-3xl md:text-4xl font-black mb-6 md:mb-8">Education</h2><div class="space-y-6 flex-grow"><div><h4 class="text-xl md:text-2xl font-black">B.Tech in ECE</h4><p class="${isDark ? 'text-slate-400' : 'text-darkTeal/70'} text-sm md:text-base">Asansol Engineering College</p><p class="${isDark ? 'text-limeAccent' : 'text-orangeAccent'} font-black mt-2 text-sm md:text-base">2022 — 2026</p></div></div><div class="p-5 md:p-6 rounded-2xl border flex justify-between items-center ${isDark ? 'bg-limeAccent/5 border-limeAccent/10' : 'bg-white/60 border-white'} mt-6"><span class="font-bold uppercase tracking-widest text-[10px] md:text-xs">Current CGPA</span><span class="text-xl md:text-2xl font-black ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}">6.75</span></div></div><div class="p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border transition-all hover:scale-[1.02] ${glass}"><i data-lucide="award" class="${isDark ? 'text-limeAccent' : 'text-orangeAccent'} mb-6 w-8 h-8 md:w-10 md:h-10"></i><h2 class="text-3xl md:text-4xl font-black mb-6 md:mb-8">Honors</h2><ul class="space-y-4 md:space-y-6">${["Smart India Hackathon (SIH) Participant", "JIS Celeb Top 25 (2025)", "College Technical Lead Candidate"].map(h => `<li class="flex items-start gap-4"><i data-lucide="check-circle-2" class="${isDark ? 'text-limeAccent' : 'text-orangeAccent'} mt-1 flex-shrink-0 w-5 h-5"></i><span class="font-bold text-base md:text-lg">${h}</span></li>`).join('')}</ul></div></div>`;
+            page.innerHTML = `
+                <div class="mb-12">
+                    <span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">05 / CREDENTIALS</span>
+                    <div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line transition-all duration-500"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    <div class="p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 ${glass} flex flex-col">
+                        <i data-lucide="graduation-cap" class="mb-6 w-8 h-8 md:w-10 md:h-10 transition-colors duration-500 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}"></i>
+                        <h2 class="text-3xl md:text-4xl font-black mb-6 md:mb-8">Education</h2>
+                        <div class="space-y-6 flex-grow">
+                            <div>
+                                <h4 class="text-xl md:text-2xl font-black">B.Tech in ECE</h4>
+                                <p class="transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'} text-sm md:text-base">Asansol Engineering College</p>
+                                <p class="font-black mt-2 text-sm md:text-base transition-colors duration-500 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}">2022 — 2026</p>
+                            </div>
+                        </div>
+                        <div class="p-5 md:p-6 rounded-2xl border flex justify-between items-center transition-all duration-500 ${isDark ? 'bg-limeAccent/5 border-limeAccent/10' : 'bg-white/60 border-white'} mt-6">
+                            <span class="font-bold uppercase tracking-widest text-[10px] md:text-xs">Current CGPA</span>
+                            <span class="text-xl md:text-2xl font-black transition-colors duration-500 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}">6.75</span>
+                        </div>
+                    </div>
+                    <div class="p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 ${glass}">
+                        <i data-lucide="award" class="mb-6 w-8 h-8 md:w-10 md:h-10 transition-colors duration-500 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}"></i>
+                        <h2 class="text-3xl md:text-4xl font-black mb-6 md:mb-8">Honors</h2>
+                        <ul class="space-y-4 md:space-y-6">
+                            ${["Smart India Hackathon (SIH) Participant", "JIS Celeb Top 25 (2025)", "College Technical Lead Candidate"].map(h => `
+                                <li class="flex items-start gap-4 group/item">
+                                    <i data-lucide="check-circle-2" class="mt-1 flex-shrink-0 w-5 h-5 transition-all duration-500 ${isDark ? 'text-limeAccent group-hover/item:scale-125' : 'text-orangeAccent group-hover/item:scale-125'}"></i>
+                                    <span class="font-bold text-base md:text-lg transition-all duration-300 group-hover/item:translate-x-1">${h}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
             lucide.createIcons();
         }
 
@@ -653,12 +753,12 @@
             const isDark = currentTheme === 'dark';
             const footer = document.getElementById('global-footer');
             const glass = isDark ? 'glass-panel-dark' : 'glass-panel-light';
-            if (footer) footer.className = `w-full max-w-7xl mx-auto px-6 py-4 mt-6 border-t transition-all duration-500 ${isDark ? 'border-white/10' : 'border-darkTeal/10'}`;
+            if (footer) footer.className = `w-full max-w-7xl mx-auto px-6 py-4 mt-6 border-t transition-all duration-700 ${isDark ? 'border-white/10' : 'border-darkTeal/10'}`;
             document.querySelectorAll('.footer-social-btn').forEach(el => {
-                el.className = `p-2.5 rounded-xl transition-all hover:scale-110 hover:${isDark ? 'text-limeAccent' : 'text-orangeAccent'} footer-social-btn ${glass} ${isDark ? 'text-white' : 'text-darkTeal'}`;
+                el.className = `p-2.5 rounded-xl transition-all duration-300 hover:scale-110 hover:-translate-y-1 hover:${isDark ? 'text-limeAccent' : 'text-orangeAccent'} footer-social-btn ${glass} ${isDark ? 'text-white' : 'text-darkTeal'}`;
             });
             const progressContainer = document.getElementById('progress-container');
-            if(progressContainer) progressContainer.className = `w-32 h-1.5 rounded-full overflow-hidden backdrop-blur-md ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'}`;
+            if(progressContainer) progressContainer.className = `w-32 h-1.5 rounded-full overflow-hidden backdrop-blur-md transition-colors duration-500 ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'}`;
         }
 
         function updateProgressBar() {
@@ -666,7 +766,7 @@
             const bar = document.getElementById('progress-bar');
             if (bar) {
                 bar.style.width = `${progress}%`;
-                bar.className = `h-full ${currentTheme === 'dark' ? 'bg-limeAccent' : 'bg-orangeAccent'} transition-all duration-300 shadow-[0_0_10px_currentColor]`;
+                bar.className = `h-full ${currentTheme === 'dark' ? 'bg-limeAccent' : 'bg-orangeAccent'} transition-all duration-700 shadow-[0_0_15px_currentColor]`;
             }
         }
     </script>
