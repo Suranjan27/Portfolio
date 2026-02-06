@@ -168,7 +168,7 @@
             <div id="navbar" class="flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all bg-black/30 border-white/10 backdrop-blur-2xl shadow-2xl shadow-black/50">
                 <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('Home')">
                     <div id="nav-logo" class="w-9 h-9 md:w-10 md:h-10 bg-limeAccent rounded-xl flex items-center justify-center font-black text-deepTeal shadow-xl shadow-limeAccent/40">S</div>
-                    <span class="font-black tracking-[0.2em] uppercase text-xs md:text-sm hidden sm:block">Suranjan</span>
+                    <span class="font-black tracking-[0.2em] uppercase text-xs md:text-sm block">Suranjan</span>
                 </div>
 
                 <div class="hidden md:flex items-center gap-1">
@@ -189,7 +189,7 @@
                     <button id="theme-toggle-mobile" onclick="toggleTheme()" class="p-2 text-limeAccent">
                         <i data-lucide="sun" id="theme-icon-mobile"></i>
                     </button>
-                    <button class="text-white" id="menu-btn" onclick="toggleMenu()">
+                    <button class="text-white transition-colors" id="menu-btn" onclick="toggleMenu()">
                         <i data-lucide="menu" id="menu-icon"></i>
                     </button>
                 </div>
@@ -343,7 +343,7 @@
             { cat: "Software", items: ["React", "Node.js", "JS", "Python"], icon: "globe" },
             { cat: "Hardware", items: ["Arduino", "Embedded C", "Sensors"], icon: "cpu" },
             { cat: "Theory", items: ["DSA", "Operating Systems"], icon: "layers" },
-            { cat: "Tools", items: ["Git", "Microsoft tools", "vs code", "AI"], icon: "terminal" }
+            { cat: "Tools", items: ["Git", "Microsoft tools", "vs code", "ai"], icon: "terminal" }
         ];
 
         // --- STATE ---
@@ -400,6 +400,7 @@
             currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
             const body = document.getElementById('body');
             const navbar = document.getElementById('navbar');
+            const menuBtn = document.getElementById('menu-btn');
             const menu = document.getElementById('mobile-menu');
             const bgGlow1 = document.getElementById('bg-glow-1');
             const bgGlow2 = document.getElementById('bg-glow-2');
@@ -411,7 +412,8 @@
 
             if (currentTheme === 'light') {
                 if (body) body.className = "bg-cream text-darkTeal overflow-x-hidden min-h-screen flex flex-col";
-                if (navbar) navbar.className = "flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all bg-white/40 border-white backdrop-blur-2xl shadow-lg";
+                if (navbar) navbar.className = "flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all bg-white/40 border-white backdrop-blur-2xl shadow-lg text-darkTeal";
+                if (menuBtn) menuBtn.className = "text-darkTeal transition-colors";
                 if (menu) menu.className = "absolute top-full left-4 right-4 mt-4 p-6 md:p-8 border rounded-[1.5rem] md:rounded-[2.5rem] backdrop-blur-3xl shadow-3xl flex-col gap-6 md:hidden bg-white/90 border-white" + (isMenuOpen ? " flex" : " hidden");
                 if (bgGlow1) bgGlow1.className = "absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors bg-orangeAccent/10";
                 if (bgGlow2) bgGlow2.className = "absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors bg-darkTeal/5";
@@ -428,7 +430,8 @@
                 if (progressBar) progressBar.className = "h-full bg-orangeAccent transition-all duration-300 shadow-[0_0_10px_#FD802E]";
             } else {
                 if (body) body.className = "bg-deepTeal text-slate-200 overflow-x-hidden min-h-screen flex flex-col";
-                if (navbar) navbar.className = "flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all bg-black/30 border-white/10 backdrop-blur-2xl shadow-2xl shadow-black/50";
+                if (navbar) navbar.className = "flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all bg-black/30 border-white/10 backdrop-blur-2xl shadow-2xl shadow-black/50 text-white";
+                if (menuBtn) menuBtn.className = "text-white transition-colors";
                 if (menu) menu.className = "absolute top-full left-4 right-4 mt-4 p-6 md:p-8 border rounded-[1.5rem] md:rounded-[2.5rem] backdrop-blur-3xl shadow-3xl flex-col gap-6 md:hidden bg-deepTeal/95 border-white/10" + (isMenuOpen ? " flex" : " hidden");
                 if (bgGlow1) bgGlow1.className = "absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors bg-limeAccent/10";
                 if (bgGlow2) bgGlow2.className = "absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors bg-deepTeal/30";
