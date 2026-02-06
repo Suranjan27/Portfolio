@@ -369,6 +369,7 @@
             { title: "Eco Track", category: "Web", description: "A community-driven platform rewarding sustainable waste reporting and city cleanliness.", tags: ["React", "Node.js", "MongoDB"], color: "from-emerald-500/20 to-teal-600/20", accent: "text-emerald-500" },
             { title: "DSA Visualizer", category: "Web", description: "Interactive algorithm animations helping students visualize complex data structures.", tags: ["JS", "Canvas", "Algorithms"], link: "https://dsa-visualizer9.netlify.app", color: "from-blue-500/20 to-indigo-600/20", accent: "text-blue-500" },
             { title: "Climate App", category: "Web", description: "A sleek weather dashboard providing real-time meteorological data and forecasts.", tags: ["React", "API", "Tailwind"], link: "https://climate9.netlify.app", color: "from-cyan-500/20 to-blue-600/20", accent: "text-cyan-500" },
+            { title: "F1", category: "Web", description: "A high-performance Formula 1 portal tracking live race stats, driver standings, and constructor analysis.", tags: ["React", "RapidAPI", "Tailwind"], link: "https://fowc.netlify.app", color: "from-red-600/20 to-stone-900/20", accent: "text-red-500" },
             { title: "Arduino Bot", category: "Hardware", description: "Autonomous robot utilizing ultrasonic radar and custom C++ motor control logic.", tags: ["Arduino", "C++", "Sensors"], color: "from-orange-500/20 to-red-600/20", accent: "text-orange-500" }
         ];
 
@@ -393,7 +394,7 @@
             { cat: "Software", items: ["React", "Node.js", "JS", "Python"], icon: "globe" },
             { cat: "Hardware", items: ["Arduino", "Embedded C", "Sensors"], icon: "cpu" },
             { cat: "Theory", items: ["DSA", "Operating Systems"], icon: "layers" },
-            { cat: "Tools", items: ["Git", "Microsoft tools", "vs code", "AI"], icon: "terminal" }
+            { cat: "Tools", items: ["Git", "Microsoft tools", "vs code", "ai"], icon: "terminal" }
         ];
 
         // --- STATE ---
@@ -552,7 +553,6 @@
                 menu.classList.remove('hidden');
                 menu.classList.add('flex');
                 
-                // Entrance animation
                 requestAnimationFrame(() => {
                     menu.classList.remove('opacity-0', '-translate-y-4');
                     menu.classList.add('opacity-100', 'translate-y-0', 'menu-open');
@@ -564,7 +564,6 @@
                 menu.classList.remove('opacity-100', 'translate-y-0', 'menu-open');
                 menu.classList.add('opacity-0', '-translate-y-4');
                 
-                // Wait for animation to finish before hiding
                 setTimeout(() => {
                     if (!isMenuOpen) {
                         menu.classList.remove('flex');
@@ -604,11 +603,11 @@
         }
 
         function updateProgressBar() {
-            const progress = ((navLinks.findIndex(l => l.id === currentPage) + 1) / navLinks.length) * 100;
+            const navIndex = navLinks.findIndex(l => l.id === currentPage);
+            const progress = ((navIndex + 1) / navLinks.length) * 100;
             const bar = document.getElementById('progress-bar');
             if (bar) {
                 bar.style.width = `${progress}%`;
-                bar.className = `h-full ${currentTheme === 'dark' ? 'bg-limeAccent' : 'bg-orangeAccent'} transition-all duration-700 shadow-[0_0_15px_currentColor]`;
             }
         }
 
