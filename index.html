@@ -269,10 +269,13 @@
         <section id="page-Credentials" class="hidden-page flex-grow w-full max-w-6xl mx-auto px-6 py-4"></section>
 
         <!-- GLOBAL PAGE FOOTER -->
-        <footer id="global-footer" class="w-full max-w-6xl mx-auto px-6 py-4 mt-6 border-t border-white/10 transition-all duration-500">
+        <footer id="global-footer" class="w-full max-w-7xl mx-auto px-6 py-4 mt-6 border-t border-white/10 transition-all duration-500">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="flex flex-col items-center md:items-start text-center md:text-left">
-                    <h3 class="text-sm font-black tracking-tighter uppercase">Let's build something.</h3>
+                <div class="flex flex-col items-center md:items-start text-center md:text-left max-w-md">
+                    <h3 class="text-sm font-black tracking-tighter uppercase mb-2">Let's build something.</h3>
+                    <p class="text-[10px] md:text-xs leading-relaxed opacity-60">
+                        This portfolio is a reflection of my journey as an engineer and creator. If you’ve got an idea, I’d love to help bring it to life. Stay connected!
+                    </p>
                 </div>
                 
                 <div class="flex items-center gap-3">
@@ -282,8 +285,8 @@
                     <a href="https://www.linkedin.com/in/suranjan-sengupta-63985a221" target="_blank" class="p-2.5 rounded-xl glass-panel-dark transition-all hover:scale-110 hover:text-orangeAccent footer-social-btn">
                         <i data-lucide="linkedin" class="w-4 h-4"></i>
                     </a>
-                    <a href="mailto:aec.ece.suranjansengupta.2026.083@gmail.com" class="p-2.5 rounded-xl glass-panel-dark transition-all hover:scale-110 hover:text-orangeAccent footer-social-btn">
-                        <i data-lucide="mail" class="w-4 h-4"></i>
+                    <a href="https://x.com/SuranjanSeng10" target="_blank" class="p-2.5 rounded-xl glass-panel-dark transition-all hover:scale-110 hover:text-orangeAccent footer-social-btn flex items-center justify-center">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932zm-1.292 19.494h2.039L6.486 3.24H4.298l13.311 17.407z"/></svg>
                     </a>
                 </div>
 
@@ -314,13 +317,26 @@
 
         const projects = [
             { title: "Eco Track", category: "Web", description: "A community-driven platform rewarding sustainable waste reporting and city cleanliness.", tags: ["React", "Node.js", "MongoDB"], color: "from-emerald-500/20 to-teal-600/20", accent: "text-emerald-500" },
-            { title: "DSA Visualizer", category: "Web", description: "Interactive algorithm animations helping students visualize complex data structures.", tags: ["JS", "Canvas", "Algorithms"], color: "from-blue-500/20 to-indigo-600/20", accent: "text-blue-500" },
+            { title: "DSA Visualizer", category: "Web", description: "Interactive algorithm animations helping students visualize complex data structures.", tags: ["JS", "Canvas", "Algorithms"], link: "https://dsa-visualizer9.netlify.app", color: "from-blue-500/20 to-indigo-600/20", accent: "text-blue-500" },
+            { title: "Climate App", category: "Web", description: "A sleek weather dashboard providing real-time meteorological data and forecasts.", tags: ["React", "API", "Tailwind"], link: "https://climate9.netlify.app", color: "from-cyan-500/20 to-blue-600/20", accent: "text-cyan-500" },
             { title: "Arduino Bot", category: "Hardware", description: "Autonomous robot utilizing ultrasonic radar and custom C++ motor control logic.", tags: ["Arduino", "C++", "Sensors"], color: "from-orange-500/20 to-red-600/20", accent: "text-orange-500" }
         ];
 
         const experiences = [
-            { company: "Prodigy InfoTech", role: "Full Stack Intern", date: "AUG 2025", desc: "Building scalable web interfaces." },
-            { company: "OASIS Infobyte", role: "Web Developer Intern", date: "AUG 2025", desc: "Collaborating on UI design systems." }
+            { 
+                company: "Prodigy InfoTech", 
+                role: "Full Stack Intern", 
+                date: "AUG 2025", 
+                desc: "Building scalable web interfaces.",
+                link: "https://www.linkedin.com/posts/suranjan-sengupta-63985a221_internship-fullstackdevelopment-webdevelopment-activity-7370535349686595584-A3uZ?utm_source=share&utm_medium=member_desktop&rcm=ACoAADfVTA0ByivHeKN34krH1_SNO5433DJyynU"
+            },
+            { 
+                company: "OASIS Infobyte", 
+                role: "Web Developer Intern", 
+                date: "AUG 2025", 
+                desc: "Collaborating on UI design systems.",
+                link: "https://www.linkedin.com/posts/suranjan-sengupta-63985a221_webdevelopment-internship-oasisinfobyte-activity-7376684987863150592-Q1EU?utm_source=share&utm_medium=member_desktop&rcm=ACoAADfVTA0ByivHeKN34krH1_SNO5433DJyynU"
+            }
         ];
 
         const skillGroups = [
@@ -543,14 +559,74 @@
             const isDark = currentTheme === 'dark';
             const glass = isDark ? 'glass-panel-dark' : 'glass-panel-light';
             const filtered = activeTab === 'All' ? projects : projects.filter(p => p.category === activeTab);
-            page.innerHTML = `<div class="mb-12"><span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">02 / PROJECTS</span><div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line"></div></div><div class="flex flex-col md:flex-row items-baseline gap-4 mb-12 md:mb-16"><h2 class="text-4xl md:text-5xl font-black tracking-tighter">PROJECTS</h2><div class="h-px flex-grow ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'} page-divider"></div><div class="flex gap-1 p-1 rounded-xl border ${isDark ? 'bg-white/5 border-white/5' : 'bg-white/40 border-white'}" id="tabs-container">${['All', 'Web', 'Hardware'].map(t => `<button onclick="setTab('${t}')" class="px-3 md:px-4 py-1.5 rounded-lg text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === t ? (isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white') : (isDark ? 'text-slate-400' : 'text-darkTeal/60')} shadow-lg">${t}</button>`).join('')}</div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">${filtered.map(p => `<div class="group relative rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-10 border transition-all duration-500 overflow-hidden ${glass} hover:scale-[1.02] active:scale-[0.98]"><div class="absolute -right-20 -top-20 w-80 h-80 bg-gradient-to-br ${p.color} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div><div class="relative z-10"><span class="text-[9px] md:text-[10px] font-black tracking-widest uppercase mb-4 block ${isDark ? 'text-limeAccent' : p.accent}">${p.category}</span><h3 class="text-3xl md:text-4xl font-black mb-4 group-hover:translate-x-2 transition-transform duration-500">${p.title}</h3><p class="mb-8 max-w-sm text-sm md:text-base ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">${p.description}</p><div class="flex flex-wrap gap-2">${p.tags.map(t => `<span class="px-3 py-1 text-[9px] font-black uppercase rounded-full border ${currentTheme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-white/40 border-white/60'}">${t}</span>`).join('')}</div></div></div>`).join('')}</div>`;
+            
+            page.innerHTML = `
+                <div class="mb-12">
+                    <span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">02 / PROJECTS</span>
+                    <div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line"></div>
+                </div>
+                <div class="flex flex-col md:flex-row items-baseline gap-4 mb-12 md:mb-16">
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter">PROJECTS</h2>
+                    <div class="h-px flex-grow ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'} page-divider"></div>
+                    <div class="flex gap-1 p-1 rounded-xl border ${isDark ? 'bg-white/5 border-white/5' : 'bg-white/40 border-white'}" id="tabs-container">
+                        ${['All', 'Web', 'Hardware'].map(t => `<button onclick="setTab('${t}')" class="px-3 md:px-4 py-1.5 rounded-lg text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === t ? (isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white') : (isDark ? 'text-slate-400' : 'text-darkTeal/60')} shadow-lg">${t}</button>`).join('')}
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    ${filtered.map(p => `
+                        <div class="group relative rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-10 border transition-all duration-500 overflow-hidden ${glass} hover:scale-[1.02] active:scale-[0.98]">
+                            <div class="absolute -right-20 -top-20 w-80 h-80 bg-gradient-to-br ${p.color} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                            <div class="relative z-10">
+                                <span class="text-[9px] md:text-[10px] font-black tracking-widest uppercase mb-4 block ${isDark ? 'text-limeAccent' : p.accent}">${p.category}</span>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-3xl md:text-4xl font-black group-hover:translate-x-2 transition-transform duration-500">${p.title}</h3>
+                                    ${p.link ? `<a href="${p.link}" target="_blank" class="p-2 rounded-xl transition-all ${isDark ? 'bg-white/10 text-limeAccent hover:bg-limeAccent hover:text-deepTeal' : 'bg-orangeAccent/10 text-orangeAccent hover:bg-orangeAccent hover:text-white'}"><i data-lucide="external-link" class="w-5 h-5"></i></a>` : ''}
+                                </div>
+                                <p class="mb-8 max-w-sm text-sm md:text-base ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">${p.description}</p>
+                                <div class="flex flex-wrap gap-2">
+                                    ${p.tags.map(t => `<span class="px-3 py-1 text-[9px] font-black uppercase rounded-full border ${isDark ? 'bg-white/5 border-white/10' : 'bg-white/40 border-white/60'}">${t}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            lucide.createIcons();
         }
 
         function renderExperience() {
             const page = document.getElementById('page-Experience'); if (!page || currentPage !== 'Experience') return;
             const isDark = currentTheme === 'dark';
             const glass = isDark ? 'glass-panel-dark' : 'glass-panel-light';
-            page.innerHTML = `<div class="mb-12"><span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">03 / EXPERIENCE</span><div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line"></div></div><div class="text-center mb-12 md:mb-16"><h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-4">EXPERIENCE</h2><p class="${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">My professional internships and industry involvement.</p></div><div class="space-y-6 md:space-y-8">${experiences.map(exp => `<div class="p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border flex flex-col md:flex-row gap-6 md:gap-8 items-start transition-all hover:translate-x-2 ${glass}"><div class="${isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white'} p-4 rounded-2xl shadow-xl"><i data-lucide="briefcase"></i></div><div><span class="text-[9px] md:text-[10px] font-black ${isDark ? 'text-limeAccent' : 'text-orangeAccent'} tracking-widest uppercase">${exp.date}</span><h4 class="text-2xl md:text-3xl font-black mt-2">${exp.company}</h4><p class="font-bold text-xs md:text-sm mb-4 ${isDark ? 'text-white/60' : 'text-darkTeal/60'}">${exp.role}</p><p class="text-sm md:text-base ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">${exp.desc}</p></div></div>`).join('')}</div>`;
+            
+            page.innerHTML = `
+                <div class="mb-12">
+                    <span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">03 / EXPERIENCE</span>
+                    <div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line"></div>
+                </div>
+                <div class="text-center mb-12 md:mb-16">
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-4">EXPERIENCE</h2>
+                    <p class="${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">My professional internships and industry involvement.</p>
+                </div>
+                <div class="space-y-6 md:space-y-8">
+                    ${experiences.map(exp => `
+                        <div class="p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border flex flex-col md:flex-row gap-6 md:gap-8 items-start transition-all hover:translate-x-2 ${glass}">
+                            <div class="${isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white'} p-4 rounded-2xl shadow-xl flex-shrink-0">
+                                <i data-lucide="briefcase"></i>
+                            </div>
+                            <div class="w-full">
+                                <span class="text-[9px] md:text-[10px] font-black ${isDark ? 'text-limeAccent' : 'text-orangeAccent'} tracking-widest uppercase">${exp.date}</span>
+                                <div class="flex items-center justify-between mt-2 mb-1">
+                                    <h4 class="text-2xl md:text-3xl font-black">${exp.company}</h4>
+                                    ${exp.link ? `<a href="${exp.link}" target="_blank" class="p-2 rounded-xl transition-all ${isDark ? 'bg-white/10 text-limeAccent hover:bg-limeAccent hover:text-deepTeal' : 'bg-orangeAccent/10 text-orangeAccent hover:bg-orangeAccent hover:text-white'}"><i data-lucide="external-link" class="w-5 h-5"></i></a>` : ''}
+                                </div>
+                                <p class="font-bold text-xs md:text-sm mb-4 ${isDark ? 'text-white/60' : 'text-darkTeal/60'}">${exp.role}</p>
+                                <p class="text-sm md:text-base ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">${exp.desc}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
             lucide.createIcons();
         }
 
