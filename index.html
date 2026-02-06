@@ -582,6 +582,8 @@
             if(desc) desc.className = `max-w-xl text-base md:text-xl font-medium mb-10 md:mb-12 transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}`;
             const btnPrimary = document.getElementById('hero-btn-primary');
             if(btnPrimary) btnPrimary.className = `w-full sm:w-auto px-10 py-4 ${isDark ? 'bg-limeAccent text-deepTeal shadow-limeAccent/20' : 'bg-orangeAccent text-white shadow-orangeAccent/30'} font-black rounded-full shadow-2xl hover:scale-105 hover:brightness-110 transition-all duration-300 uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-2`;
+            const cvBtn = document.getElementById('hero-cv-btn');
+            if(cvBtn) cvBtn.className = `w-full sm:w-auto px-10 py-4 font-black rounded-full border transition-all duration-300 uppercase tracking-widest text-[10px] md:text-xs backdrop-blur-md ${isDark ? 'bg-white/5 border-white/10 text-white hover:bg-white/10' : 'bg-white/60 border-white text-darkTeal hover:bg-white/80'} flex items-center justify-center gap-2 hover:scale-105 active:scale-95`;
             const hLine = document.getElementById('hero-line');
             if(hLine) hLine.className = `h-px w-12 transition-all duration-500 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'}`;
             document.querySelectorAll('.hero-highlight').forEach(el => el.className = `hero-highlight transition-all duration-500 ${isDark ? 'text-white font-bold' : 'text-darkTeal font-bold underline decoration-orangeAccent/30'}`);
