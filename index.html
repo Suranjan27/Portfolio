@@ -24,6 +24,7 @@
             text-rendering: optimizeLegibility;
             overflow-x: hidden;
             width: 100%;
+            cursor: none !important; /* Hide default cursor everywhere */
         }
 
         /* Target headers for the new font style */
@@ -128,6 +129,70 @@
             border-radius: 10px;
         }
 
+        /* --- CUSTOM CURSOR STYLES --- */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #E0FF4F;
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            /* Fixed centering */
+            transform: translate3d(-50%, -50%, 0);
+        }
+
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #E0FF4F;
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate3d(-50%, -50%, 0);
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .cursor-hover-active .cursor-follower {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(224, 255, 79, 0.1);
+            border-color: transparent;
+        }
+
+        /* Contact Page Styles */
+        #doodle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            display: none;
+        }
+
+        .contact-theme {
+            background: linear-gradient(135deg, #050a18 0%, #1e1b4b 50%, #4c1d95 100%) !important;
+        }
+
+        .glass-composer {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        input, textarea {
+            cursor: text !important;
+        }
+
         /* Touch-friendly active states */
         button:active, a:active {
             transform: scale(0.95) translate3d(0, 0, 0);
@@ -149,13 +214,7 @@
             transform: translateY(0);
         }
 
-        /* Image Smoothness */
-        img {
-            backface-visibility: hidden;
-            -webkit-user-drag: none;
-        }
-
-        /* Toast notification for copied email */
+        /* Toast notification */
         #email-toast {
             transition: all 0.5s var(--fluid-easing);
             transform: translate3d(-50%, 100%, 0);
@@ -187,25 +246,34 @@
 </head>
 <body class="bg-deepTeal text-slate-200 min-h-screen flex flex-col" id="body">
 
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-follower" id="cursor-follower"></div>
+
+    <!-- BACKGROUND DOODLE CANVAS -->
+    <canvas id="doodle-canvas"></canvas>
+
     <!-- INTERACT RIBBONS -->
-    <div class="ribbon-container" style="top: 25%; transform: translate3d(-50%, -50%, 0) rotate(3deg);">
-        <div class="ribbon-text marquee-std scrolling-ribbon" style="color: white;">
-            SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • 
+    <div id="ribbon-wrap">
+        <div class="ribbon-container" style="top: 25%; transform: translate3d(-50%, -50%, 0) rotate(3deg);">
+            <div class="ribbon-text marquee-std scrolling-ribbon" style="color: white;">
+                SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • 
+            </div>
         </div>
-    </div>
-    <div class="ribbon-container" style="top: 50%; transform: translate3d(-50%, -50%, 0) rotate(-5deg);">
-        <div class="ribbon-text marquee-rev scrolling-ribbon" style="color: white;">
-            SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • 
+        <div class="ribbon-container" style="top: 50%; transform: translate3d(-50%, -50%, 0) rotate(-5deg);">
+            <div class="ribbon-text marquee-rev scrolling-ribbon" style="color: white;">
+                SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • 
+            </div>
         </div>
-    </div>
-    <div class="ribbon-container" style="top: 75%; transform: translate3d(-50%, -50%, 0) rotate(2deg);">
-        <div class="ribbon-text marquee-std scrolling-ribbon" style="color: white;">
-            SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • 
+        <div class="ribbon-container" style="top: 75%; transform: translate3d(-50%, -50%, 0) rotate(2deg);">
+            <div class="ribbon-text marquee-std scrolling-ribbon" style="color: white;">
+                SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • SURANJAN SENGUPTA • ECE ENGINEER • FULL STACK DEVELOPER • CIRCUIT DESIGNER • 
+            </div>
         </div>
     </div>
 
     <!-- GLOBAL BACKGROUND ELEMENTS -->
-    <div class="fixed inset-0 pointer-events-none -z-10">
+    <div id="global-glows" class="fixed inset-0 pointer-events-none -z-10">
         <div id="bg-glow-1" class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-limeAccent/10"></div>
         <div id="bg-glow-2" class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-deepTeal/30"></div>
     </div>
@@ -311,6 +379,7 @@
         <section id="page-Experience" class="hidden-page flex-grow w-full max-w-4xl mx-auto px-6 py-4 page-transition"></section>
         <section id="page-Skills" class="hidden-page flex-grow w-full max-w-6xl mx-auto px-6 py-4 page-transition"></section>
         <section id="page-Credentials" class="hidden-page flex-grow w-full max-w-6xl mx-auto px-6 py-4 page-transition"></section>
+        <section id="page-Contact" class="hidden-page flex-grow w-full max-w-4xl mx-auto px-6 py-4 page-transition flex items-center justify-center"></section>
 
         <!-- GLOBAL PAGE FOOTER -->
         <footer id="global-footer" class="w-full max-w-7xl mx-auto px-6 py-4 mt-6 border-t border-white/10 transition-all duration-700">
@@ -405,6 +474,11 @@
         let lastScrollY = window.scrollY;
         let ribbonSpeedMultiplier = 1;
 
+        // Doodle System state
+        let particles = [];
+        const doodleCanvas = document.getElementById('doodle-canvas');
+        const doodleCtx = doodleCanvas ? doodleCanvas.getContext('2d') : null;
+
         // --- INITIALIZATION ---
         window.onload = () => {
             renderNav();
@@ -412,36 +486,96 @@
             renderExperience();
             renderSkills();
             renderCredentials();
+            renderContact();
             renderFooter(); 
+            initCursor();
+            initDoodles();
             lucide.createIcons();
             window.addEventListener('scroll', handleScroll, { passive: true });
+            window.addEventListener('resize', resizeCanvas);
             updateProgressBar();
         };
 
-        // --- CONTACT LOGIC ---
-        function handleContactClick(e) {
-            window.location.href = `mailto:${emailAddress}`;
-            const textArea = document.createElement("textarea");
-            textArea.value = emailAddress;
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                showToast();
-            } catch (err) {}
-            document.body.removeChild(textArea);
+        // --- DOODLE LOGIC ---
+        function initDoodles() {
+            resizeCanvas();
+            animateDoodles();
         }
 
-        function showToast() {
-            const toast = document.getElementById('email-toast');
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+        function resizeCanvas() {
+            if (doodleCanvas) {
+                doodleCanvas.width = window.innerWidth;
+                doodleCanvas.height = window.innerHeight;
+            }
         }
+
+        function animateDoodles() {
+            if (!doodleCtx || currentPage !== 'Contact') {
+                requestAnimationFrame(animateDoodles);
+                return;
+            }
+
+            doodleCtx.clearRect(0, 0, doodleCanvas.width, doodleCanvas.height);
+            particles.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy; p.life -= 0.015;
+                if (p.life <= 0) { particles.splice(i, 1); return; }
+                doodleCtx.beginPath();
+                doodleCtx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+                doodleCtx.fillStyle = `rgba(${p.color}, ${p.life * 0.4})`;
+                doodleCtx.fill();
+            });
+            requestAnimationFrame(animateDoodles);
+        }
+
+        // --- CUSTOM CURSOR LOGIC ---
+        function initCursor() {
+            const dot = document.getElementById('cursor-dot');
+            const follower = document.getElementById('cursor-follower');
+            
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX;
+                const y = e.clientY;
+                
+                // Fixed centering and high-performance positioning
+                dot.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+                follower.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+                
+                if (currentPage === 'Contact') {
+                    for(let i=0; i<1; i++) {
+                        particles.push({
+                            x, y,
+                            vx: (Math.random() - 0.5) * 2,
+                            vy: (Math.random() - 0.5) * 2,
+                            size: Math.random() * 4 + 1,
+                            life: 1,
+                            color: Math.random() > 0.5 ? '224, 255, 79' : '253, 128, 46'
+                        });
+                    }
+                }
+            });
+
+            document.body.addEventListener('mousedown', () => document.body.classList.add('cursor-hover-active'));
+            document.body.addEventListener('mouseup', () => document.body.classList.remove('cursor-hover-active'));
+
+            const interactives = 'button, a, .cursor-pointer, .footer-social-btn, input, textarea';
+            document.body.addEventListener('mouseover', (e) => {
+                if (e.target.closest(interactives)) document.body.classList.add('cursor-hover-active');
+            });
+            document.body.addEventListener('mouseout', (e) => {
+                if (e.target.closest(interactives)) document.body.classList.remove('cursor-hover-active');
+            });
+        }
+
+        // --- CONTACT LOGIC ---
+        function handleContactClick() { navigateTo('Contact'); }
 
         // --- NAVIGATION ---
         function navigateTo(page) {
             if (page === currentPage) return;
             const main = document.getElementById('main-content');
+            const ribbons = document.getElementById('ribbon-wrap');
+            const glows = document.getElementById('global-glows');
+            const doodle = document.getElementById('doodle-canvas');
             
             if (main) {
                 main.style.opacity = '0';
@@ -453,6 +587,20 @@
                 if (prevPage) prevPage.classList.add('hidden-page');
                 
                 currentPage = page;
+
+                // Contact Theme Toggle
+                if (page === 'Contact') {
+                    document.body.classList.add('contact-theme');
+                    if(ribbons) ribbons.style.display = 'none';
+                    if(glows) glows.style.display = 'none';
+                    if(doodle) doodle.style.display = 'block';
+                } else {
+                    document.body.classList.remove('contact-theme');
+                    if(ribbons) ribbons.style.display = 'block';
+                    if(glows) glows.style.display = 'block';
+                    if(doodle) doodle.style.display = 'none';
+                }
+
                 const nextPage = document.getElementById(`page-${currentPage}`);
                 if (nextPage) {
                     nextPage.classList.remove('hidden-page');
@@ -461,6 +609,7 @@
                     if (page === 'Experience') renderExperience();
                     if (page === 'Skills') renderSkills();
                     if (page === 'Credentials') renderCredentials();
+                    if (page === 'Contact') renderContact();
                 }
                 renderNav();
                 updateProgressBar();
@@ -483,61 +632,39 @@
             currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
             const body = document.getElementById('body');
             const navbar = document.getElementById('navbar');
-            const menuBtn = document.getElementById('menu-btn');
-            const menu = document.getElementById('mobile-menu');
-            const bgGlow1 = document.getElementById('bg-glow-1');
-            const bgGlow2 = document.getElementById('bg-glow-2');
+            const glows = [document.getElementById('bg-glow-1'), document.getElementById('bg-glow-2')];
             const logo = document.getElementById('nav-logo');
             const ribbons = document.querySelectorAll('.scrolling-ribbon');
             const themeToggle = document.getElementById('theme-toggle');
-            const themeToggleMobile = document.getElementById('theme-toggle-mobile');
             const progressBar = document.getElementById('progress-bar');
+            const cursor = [document.getElementById('cursor-dot'), document.getElementById('cursor-follower')];
 
             if (currentTheme === 'light') {
-                if (body) body.className = "bg-cream text-darkTeal overflow-x-hidden min-h-screen flex flex-col";
+                if (body) body.className = (currentPage === 'Contact' ? "contact-theme " : "bg-cream ") + "text-darkTeal min-h-screen flex flex-col";
                 if (navbar) navbar.className = "flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all duration-500 bg-white/40 border-white backdrop-blur-2xl shadow-lg text-darkTeal";
-                if (menuBtn) menuBtn.className = "text-darkTeal transition-colors duration-500 relative z-50";
-                if (menu) {
-                    menu.classList.add('bg-white/90', 'border-white');
-                    menu.classList.remove('bg-deepTeal/95', 'border-white/10');
-                }
-                if (bgGlow1) bgGlow1.className = "absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-orangeAccent/10";
-                if (bgGlow2) bgGlow2.className = "absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-darkTeal/5";
+                if (glows[0]) glows[0].className = "absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-orangeAccent/10";
+                if (glows[1]) glows[1].className = "absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-darkTeal/5";
                 ribbons.forEach(r => r.style.color = "#233D4C");
                 if (logo) logo.className = "w-9 h-9 md:w-10 md:h-10 bg-orangeAccent rounded-xl flex items-center justify-center font-black text-white shadow-xl shadow-orangeAccent/40 transition-all duration-500";
-                
-                const icon = document.getElementById('theme-icon');
-                if (icon) icon.setAttribute('data-lucide', 'moon');
-                const iconMobile = document.getElementById('theme-icon-mobile');
-                if (iconMobile) iconMobile.setAttribute('data-lucide', 'moon');
-                
-                if (themeToggle) themeToggle.className = "p-2 rounded-xl transition-all duration-300 hover:scale-110 hover:bg-black/5 text-orangeAccent";
-                if (themeToggleMobile) themeToggleMobile.className = "p-2 text-orangeAccent transition-colors duration-500";
+                document.getElementById('theme-icon').setAttribute('data-lucide', 'moon');
+                document.getElementById('theme-icon-mobile').setAttribute('data-lucide', 'moon');
                 if (progressBar) progressBar.className = "h-full bg-orangeAccent transition-all duration-500 shadow-[0_0_10px_#FD802E]";
+                if (cursor[0]) cursor[0].style.backgroundColor = '#FD802E';
+                if (cursor[1]) cursor[1].style.borderColor = '#FD802E';
             } else {
-                if (body) body.className = "bg-deepTeal text-slate-200 overflow-x-hidden min-h-screen flex flex-col";
+                if (body) body.className = (currentPage === 'Contact' ? "contact-theme " : "bg-deepTeal ") + "text-slate-200 min-h-screen flex flex-col";
                 if (navbar) navbar.className = "flex items-center justify-between px-5 py-3 md:px-6 md:py-3 rounded-[1.5rem] md:rounded-[2rem] border transition-all duration-500 bg-black/30 border-white/10 backdrop-blur-2xl shadow-2xl shadow-black/50 text-white";
-                if (menuBtn) menuBtn.className = "text-white transition-colors duration-500 relative z-50";
-                if (menu) {
-                    menu.classList.remove('bg-white/90', 'border-white');
-                    menu.classList.add('bg-deepTeal/95', 'border-white/10');
-                }
-                if (bgGlow1) bgGlow1.className = "absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-limeAccent/10";
-                if (bgGlow2) bgGlow2.className = "absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-deepTeal/30";
+                if (glows[0]) glows[0].className = "absolute top-[-20%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-limeAccent/10";
+                if (glows[1]) glows[1].className = "absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-all duration-1000 bg-deepTeal/30";
                 ribbons.forEach(r => r.style.color = "white");
                 if (logo) logo.className = "w-9 h-9 md:w-10 md:h-10 bg-limeAccent rounded-xl flex items-center justify-center font-black text-deepTeal shadow-xl shadow-limeAccent/40 transition-all duration-500";
-
-                const icon = document.getElementById('theme-icon');
-                if (icon) icon.setAttribute('data-lucide', 'sun');
-                const iconMobile = document.getElementById('theme-icon-mobile');
-                if (iconMobile) iconMobile.setAttribute('data-lucide', 'sun');
-                
-                if (themeToggle) themeToggle.className = "p-2 rounded-xl transition-all duration-300 hover:scale-110 hover:bg-white/5 text-limeAccent";
-                if (themeToggleMobile) themeToggleMobile.className = "p-2 text-limeAccent transition-colors duration-500";
+                document.getElementById('theme-icon').setAttribute('data-lucide', 'sun');
+                document.getElementById('theme-icon-mobile').setAttribute('data-lucide', 'sun');
                 if (progressBar) progressBar.className = "h-full bg-limeAccent transition-all duration-500 shadow-[0_0_10px_#E0FF4F]";
+                if (cursor[0]) cursor[0].style.backgroundColor = '#E0FF4F';
+                if (cursor[1]) cursor[1].style.borderColor = '#E0FF4F';
             }
-            
-            renderNav(); renderProjects(); renderExperience(); renderSkills(); renderCredentials(); renderFooter(); renderHero(); lucide.createIcons();
+            renderNav(); renderHero(); lucide.createIcons();
         }
 
         function toggleMenu(force) {
@@ -545,32 +672,17 @@
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('menu-icon');
             const body = document.getElementById('body');
-
-            if (!menu) return;
-
             if (isMenuOpen) {
                 body.classList.add('mobile-menu-active');
                 menu.classList.remove('hidden');
                 menu.classList.add('flex');
-                
-                requestAnimationFrame(() => {
-                    menu.classList.remove('opacity-0', '-translate-y-4');
-                    menu.classList.add('opacity-100', 'translate-y-0', 'menu-open');
-                });
-
+                requestAnimationFrame(() => { menu.classList.remove('opacity-0', '-translate-y-4'); menu.classList.add('opacity-100', 'translate-y-0', 'menu-open'); });
                 if (icon) icon.setAttribute('data-lucide', 'x');
             } else {
                 body.classList.remove('mobile-menu-active');
                 menu.classList.remove('opacity-100', 'translate-y-0', 'menu-open');
                 menu.classList.add('opacity-0', '-translate-y-4');
-                
-                setTimeout(() => {
-                    if (!isMenuOpen) {
-                        menu.classList.remove('flex');
-                        menu.classList.add('hidden');
-                    }
-                }, 500);
-
+                setTimeout(() => { if (!isMenuOpen) { menu.classList.remove('flex'); menu.classList.add('hidden'); } }, 500);
                 if (icon) icon.setAttribute('data-lucide', 'menu');
             }
             lucide.createIcons();
@@ -584,19 +696,14 @@
                 if (window.scrollY > 20) navbar.classList.add('shadow-2xl'); 
                 else navbar.classList.remove('shadow-2xl'); 
             }
-            
             const ribbons = document.querySelectorAll('.scrolling-ribbon');
             if (ribbons.length) {
                 const scrollDiff = Math.abs(window.scrollY - lastScrollY);
                 ribbonSpeedMultiplier = Math.min(12, 1 + (scrollDiff / 4));
                 ribbons.forEach(r => r.style.animationDuration = `${30 / ribbonSpeedMultiplier}s`);
-                
                 clearTimeout(window.ribbonDecayTimer);
                 window.ribbonDecayTimer = setTimeout(() => { 
-                    ribbons.forEach(r => {
-                        r.style.transition = 'animation-duration 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
-                        r.style.animationDuration = `30s`; 
-                    });
+                    ribbons.forEach(r => { r.style.transition = 'animation-duration 1.2s cubic-bezier(0.4, 0, 0.2, 1)'; r.style.animationDuration = `30s`; });
                 }, 100);
                 lastScrollY = window.scrollY;
             }
@@ -606,9 +713,7 @@
             const navIndex = navLinks.findIndex(l => l.id === currentPage);
             const progress = ((navIndex + 1) / navLinks.length) * 100;
             const bar = document.getElementById('progress-bar');
-            if (bar) {
-                bar.style.width = `${progress}%`;
-            }
+            if (bar) bar.style.width = `${progress}%`;
         }
 
         function renderNav() {
@@ -616,64 +721,15 @@
             const ctaContainer = document.getElementById('desktop-cta-container');
             const mobileContainer = document.getElementById('mobile-menu');
             const isDark = currentTheme === 'dark';
-            
             if (container) {
-                container.innerHTML = navLinks.map(link => `
-                    <button onclick="navigateTo('${link.id}')" class="px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] transition-all duration-300 rounded-xl hover:scale-105 ${
-                        currentPage === link.id 
-                          ? (isDark ? 'text-limeAccent bg-limeAccent/10' : 'text-orangeAccent bg-orangeAccent/10')
-                          : isDark ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-darkTeal/60 hover:text-darkTeal hover:bg-black/5'
-                    }">
-                      ${link.name}
-                    </button>
-                `).join('');
+                container.innerHTML = navLinks.map(link => `<button onclick="navigateTo('${link.id}')" class="px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all rounded-xl ${currentPage === link.id ? (isDark ? 'text-limeAccent bg-limeAccent/10' : 'text-orangeAccent bg-orangeAccent/10') : isDark ? 'text-slate-400 hover:text-white' : 'text-darkTeal/60 hover:text-darkTeal'}">${link.name}</button>`).join('');
             }
-
             if (ctaContainer) {
-                const ctaStyle = isDark ? 'bg-limeAccent text-deepTeal shadow-limeAccent/20' : 'bg-orangeAccent text-white shadow-orangeAccent/20';
-                ctaContainer.innerHTML = `
-                    <button onclick="handleContactClick()" class="ml-2 px-5 py-2 text-[10px] font-black uppercase tracking-[0.15em] transition-all duration-300 rounded-xl shadow-xl hover:scale-105 hover:brightness-110 active:scale-95 ${ctaStyle}">
-                      Get in Touch
-                    </button>
-                `;
+                ctaContainer.innerHTML = `<button onclick="handleContactClick()" class="ml-2 px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-all rounded-xl shadow-xl hover:scale-105 active:scale-95 ${currentPage === 'Contact' ? 'opacity-0 pointer-events-none' : (isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white')}">Get in Touch</button>`;
             }
-
             if (mobileContainer) {
-                mobileContainer.innerHTML = navLinks.map((link, idx) => `
-                    <button onclick="navigateTo('${link.id}')" class="menu-item text-2xl font-black text-left uppercase tracking-tighter transition-all duration-300 hover:translate-x-2 ${
-                      currentPage === link.id ? (isDark ? 'text-limeAccent' : 'text-orangeAccent') : (isDark ? 'text-white' : 'text-darkTeal')
-                    }" style="transition-delay: ${idx * 50}ms">
-                        ${link.name}
-                    </button>
-                `).join('') + `
-                    <div class="menu-item h-px w-full ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'}" style="transition-delay: ${navLinks.length * 50}ms"></div>
-                    <button onclick="handleContactClick()" class="menu-item ${isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white'} py-4 rounded-2xl text-center font-black uppercase tracking-widest text-xs transition-all duration-300 hover:scale-[1.02] active:scale-95" style="transition-delay: ${(navLinks.length + 1) * 50}ms">
-                      Get in Touch
-                    </button>
-                `;
+                mobileContainer.innerHTML = navLinks.map((link, idx) => `<button onclick="navigateTo('${link.id}')" class="menu-item text-2xl font-black text-left uppercase tracking-tighter transition-all ${currentPage === link.id ? (isDark ? 'text-limeAccent' : 'text-orangeAccent') : (isDark ? 'text-white' : 'text-darkTeal')}" style="transition-delay: ${idx * 50}ms">${link.name}</button>`).join('') + `<div class="menu-item h-px w-full bg-white/10"></div><button onclick="handleContactClick()" class="menu-item ${isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white'} py-4 rounded-2xl font-black uppercase tracking-widest text-xs">Get in Touch</button>`;
             }
-            const divider = document.getElementById('nav-divider');
-            if (divider) divider.className = `h-4 w-px ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'} mx-4 transition-colors duration-500`;
-        }
-
-        function renderHero() {
-            const isDark = currentTheme === 'dark';
-            const badge = document.getElementById('hero-badge');
-            if(badge) badge.className = `inline-block mb-6 md:mb-8 px-4 py-1 rounded-full text-[9px] md:text-[10px] font-black tracking-[0.2em] uppercase border animate-pulse backdrop-blur-md transition-all duration-500 ${isDark ? 'bg-white/5 border-white/10 text-limeAccent' : 'bg-orangeAccent/10 border-orangeAccent/20 text-darkTeal'}`;
-            const title = document.getElementById('hero-title');
-            if(title) title.className = `text-5xl md:text-7xl xl:text-7xl font-black tracking-tighter mb-6 md:mb-8 leading-[1.1] lg:leading-[0.9] transition-colors duration-500 ${isDark ? 'text-slate-200' : 'text-darkTeal'}`;
-            const span = document.getElementById('hero-span');
-            if(span) span.className = isDark ? "text-transparent bg-clip-text bg-gradient-to-r from-limeAccent to-white" : "text-orangeAccent transition-colors duration-500";
-            const desc = document.getElementById('hero-desc');
-            if(desc) desc.className = `max-w-xl text-base md:text-xl font-medium mb-10 md:mb-12 transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}`;
-            const btnPrimary = document.getElementById('hero-btn-primary');
-            if(btnPrimary) btnPrimary.className = `w-full sm:w-auto px-10 py-4 ${isDark ? 'bg-limeAccent text-deepTeal shadow-limeAccent/20' : 'bg-orangeAccent text-white shadow-orangeAccent/30'} font-black rounded-full shadow-2xl hover:scale-105 hover:brightness-110 transition-all duration-300 uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-2`;
-            const cvBtn = document.getElementById('hero-cv-btn');
-            if(cvBtn) cvBtn.className = `w-full sm:w-auto px-10 py-4 font-black rounded-full border transition-all duration-300 uppercase tracking-widest text-[10px] md:text-xs backdrop-blur-md ${isDark ? 'bg-white/5 border-white/10 text-white hover:bg-white/10' : 'bg-white/60 border-white text-darkTeal hover:bg-white/80'} flex items-center justify-center gap-2 hover:scale-105 active:scale-95`;
-            const hLine = document.getElementById('hero-line');
-            if(hLine) hLine.className = `h-px w-12 transition-all duration-500 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'}`;
-            document.querySelectorAll('.hero-highlight').forEach(el => el.className = `hero-highlight transition-all duration-500 ${isDark ? 'text-white font-bold' : 'text-darkTeal font-bold underline decoration-orangeAccent/30'}`);
-            document.querySelectorAll('.section-indicator').forEach(el => el.className = `text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator transition-colors duration-500 ${isDark ? 'text-slate-200' : 'text-darkTeal'}`);
         }
 
         function renderProjects() {
@@ -681,38 +737,7 @@
             const isDark = currentTheme === 'dark';
             const glass = isDark ? 'glass-panel-dark' : 'glass-panel-light';
             const filtered = activeTab === 'All' ? projects : projects.filter(p => p.category === activeTab);
-            
-            page.innerHTML = `
-                <div class="mb-12">
-                    <span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">02 / PROJECTS</span>
-                    <div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line transition-all duration-500"></div>
-                </div>
-                <div class="flex flex-col md:flex-row items-baseline gap-4 mb-12 md:mb-16">
-                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter">PROJECTS</h2>
-                    <div class="h-px flex-grow ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'} page-divider transition-colors duration-500"></div>
-                    <div class="flex gap-1 p-1 rounded-xl border ${isDark ? 'bg-white/5 border-white/5' : 'bg-white/40 border-white'} transition-all duration-500" id="tabs-container">
-                        ${['All', 'Web', 'Hardware'].map(t => `<button onclick="setTab('${t}')" class="px-3 md:px-4 py-1.5 rounded-lg text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${activeTab === t ? (isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white') : (isDark ? 'text-slate-400 hover:text-white' : 'text-darkTeal/60 hover:text-darkTeal')} shadow-lg">${t}</button>`).join('')}
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                    ${filtered.map(p => `
-                        <div class="group relative rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-10 border transition-all duration-500 overflow-hidden ${glass} hover:scale-[1.02] hover:-translate-y-1">
-                            <div class="absolute -right-20 -top-20 w-80 h-80 bg-gradient-to-br ${p.color} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
-                            <div class="relative z-10">
-                                <span class="text-[9px] md:text-[10px] font-black tracking-widest uppercase mb-4 block transition-colors duration-500 ${isDark ? 'text-limeAccent' : p.accent}">${p.category}</span>
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="text-3xl md:text-4xl font-black group-hover:translate-x-2 transition-transform duration-500">${p.title}</h3>
-                                    ${p.link ? `<a href="${p.link}" target="_blank" class="p-2 rounded-xl transition-all duration-300 hover:scale-110 ${isDark ? 'bg-white/10 text-limeAccent hover:bg-limeAccent hover:text-deepTeal' : 'bg-orangeAccent/10 text-orangeAccent hover:bg-orangeAccent hover:text-white'}"><i data-lucide="external-link" class="w-5 h-5"></i></a>` : ''}
-                                </div>
-                                <p class="mb-8 max-w-sm text-sm md:text-base transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">${p.description}</p>
-                                <div class="flex flex-wrap gap-2">
-                                    ${p.tags.map(t => `<span class="px-3 py-1 text-[9px] font-black uppercase rounded-full border transition-all duration-500 ${isDark ? 'bg-white/5 border-white/10' : 'bg-white/40 border-white/60'}">${t}</span>`).join('')}
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
+            page.innerHTML = `<div class="mb-12"><span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">02 / PROJECTS</span><div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line"></div></div><div class="flex flex-col md:flex-row items-baseline gap-4 mb-12 md:mb-16"><h2 class="text-4xl md:text-5xl font-black tracking-tighter">PROJECTS</h2><div class="h-px flex-grow bg-white/10"></div><div class="flex gap-1 p-1 rounded-xl border border-white/5"><button onclick="setTab('All')" class="px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest ${activeTab === 'All' ? (isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white') : ''}">All</button><button onclick="setTab('Web')" class="px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest ${activeTab === 'Web' ? (isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white') : ''}">Web</button><button onclick="setTab('Hardware')" class="px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest ${activeTab === 'Hardware' ? (isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white') : ''}">Hardware</button></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-8">${filtered.map(p => `<div class="group relative rounded-[2.5rem] p-10 border transition-all ${glass} hover:scale-[1.02]"><div class="relative z-10"><span class="text-[9px] font-black tracking-widest uppercase mb-4 block ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}">${p.category}</span><div class="flex items-center justify-between mb-4"><h3 class="text-3xl font-black">${p.title}</h3>${p.link ? `<a href="${p.link}" target="_blank" class="p-2 rounded-xl transition-all ${isDark ? 'bg-white/10 text-limeAccent' : 'bg-orangeAccent/10 text-orangeAccent'}"><i data-lucide="external-link" class="w-5 h-5"></i></a>` : ''}</div><p class="mb-8 max-w-sm text-sm opacity-70">${p.description}</p><div class="flex flex-wrap gap-2">${p.tags.map(t => `<span class="px-3 py-1 text-[9px] font-black uppercase rounded-full border border-white/10">${t}</span>`).join('')}</div></div></div>`).join('')}</div>`;
             lucide.createIcons();
         }
 
@@ -720,35 +745,7 @@
             const page = document.getElementById('page-Experience'); if (!page || currentPage !== 'Experience') return;
             const isDark = currentTheme === 'dark';
             const glass = isDark ? 'glass-panel-dark' : 'glass-panel-light';
-            
-            page.innerHTML = `
-                <div class="mb-12">
-                    <span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">03 / EXPERIENCE</span>
-                    <div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line transition-all duration-500"></div>
-                </div>
-                <div class="text-center mb-12 md:mb-16">
-                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-4">EXPERIENCE</h2>
-                    <p class="transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">My professional internships and industry involvement.</p>
-                </div>
-                <div class="space-y-6 md:space-y-8">
-                    ${experiences.map(exp => `
-                        <div class="p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border flex flex-col md:flex-row gap-6 md:gap-8 items-start transition-all duration-500 hover:scale-[1.01] hover:translate-x-2 ${glass}">
-                            <div class="${isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white'} p-4 rounded-2xl shadow-xl flex-shrink-0 transition-all duration-500">
-                                <i data-lucide="briefcase"></i>
-                            </div>
-                            <div class="w-full">
-                                <span class="text-[9px] md:text-[10px] font-black tracking-widest uppercase transition-colors duration-500 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}">${exp.date}</span>
-                                <div class="flex items-center justify-between mt-2 mb-1">
-                                    <h4 class="text-2xl md:text-3xl font-black">${exp.company}</h4>
-                                    ${exp.link ? `<a href="${exp.link}" target="_blank" class="p-2 rounded-xl transition-all duration-300 hover:scale-110 ${isDark ? 'bg-white/10 text-limeAccent hover:bg-limeAccent hover:text-deepTeal' : 'bg-orangeAccent/10 text-orangeAccent hover:bg-orangeAccent hover:text-white'}"><i data-lucide="external-link" class="w-5 h-5"></i></a>` : ''}
-                                </div>
-                                <p class="font-bold text-xs md:text-sm mb-4 transition-colors duration-500 ${isDark ? 'text-white/60' : 'text-darkTeal/60'}">${exp.role}</p>
-                                <p class="text-sm md:text-base transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'}">${exp.desc}</p>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
+            page.innerHTML = `<div class="mb-12"><span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">03 / EXPERIENCE</span><div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line"></div></div><div class="text-center mb-16"><h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-4">EXPERIENCE</h2><p class="opacity-60">My professional internships and industry involvement.</p></div><div class="space-y-8">${experiences.map(exp => `<div class="p-10 rounded-[2.5rem] border flex flex-col md:flex-row gap-8 items-start transition-all ${glass} hover:scale-[1.01]"><div class="${isDark ? 'bg-limeAccent text-deepTeal' : 'bg-orangeAccent text-white'} p-4 rounded-2xl shadow-xl flex-shrink-0"><i data-lucide="briefcase"></i></div><div class="w-full"><span class="text-[9px] font-black tracking-widest uppercase ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}">${exp.date}</span><div class="flex items-center justify-between mt-2 mb-1"><h4 class="text-2xl font-black">${exp.company}</h4>${exp.link ? `<a href="${exp.link}" target="_blank" class="p-2 rounded-xl transition-all ${isDark ? 'bg-white/10 text-limeAccent' : 'bg-orangeAccent/10 text-orangeAccent'}"><i data-lucide="external-link" class="w-5 h-5"></i></a>` : ''}</div><p class="font-bold text-xs opacity-60 mb-4">${exp.role}</p><p class="text-sm opacity-70">${exp.desc}</p></div></div>`).join('')}</div>`;
             lucide.createIcons();
         }
 
@@ -756,42 +753,7 @@
             const page = document.getElementById('page-Skills'); if (!page || currentPage !== 'Skills') return;
             const isDark = currentTheme === 'dark';
             const glass = isDark ? 'glass-panel-dark' : 'glass-panel-light';
-            page.innerHTML = `
-                <div class="mb-12">
-                    <span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">04 / SKILLS</span>
-                    <div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line transition-all duration-500"></div>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
-                    <div>
-                        <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-4 md:mb-6">TECH STACK</h2>
-                        <p class="transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'} mb-6">Expertise across software and embedded systems.</p>
-                        <div class="p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border font-mono text-[10px] md:text-xs transition-all duration-500 ${isDark ? 'bg-black/40 border-white/5 backdrop-blur-xl' : 'bg-darkTeal text-cream shadow-2xl shadow-darkTeal/40'}">
-                            <i data-lucide="terminal" class="mb-4 transition-colors duration-500 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}"></i>
-                            <p class="mb-1 text-slate-300">> loading_profile: Suranjan</p>
-                            <p class="mb-1 text-slate-300">> status: open_to_internships</p>
-                            <p class="mb-1 text-slate-300">> location: Asansol, IN</p>
-                            <div class="mt-4 h-1 w-full bg-white/10 rounded-full overflow-hidden">
-                                <div class="h-full transition-all duration-1000 ${isDark ? 'bg-limeAccent shadow-[0_0_10px_#E0FF4F]' : 'bg-orangeAccent shadow-[0_0_10px_#FD802E]'} w-[85%]"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        ${skillGroups.map(s => `
-                            <div class="p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 ${glass}">
-                                <div class="flex items-center gap-3 mb-6">
-                                    <div class="p-2 rounded-lg transition-colors duration-500 ${isDark ? 'bg-limeAccent/10 text-limeAccent' : 'bg-orangeAccent/10 text-orangeAccent'}">
-                                        <i data-lucide="${s.icon}" class="w-4 h-4"></i>
-                                    </div>
-                                    <h4 class="font-black uppercase tracking-widest text-[10px] md:text-xs">${s.cat}</h4>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    ${s.items.map(it => `<div class="px-3 md:px-4 py-1.5 md:py-2 rounded-xl text-[10px] md:text-xs font-bold border transition-all duration-500 ${isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white/40 border-white hover:bg-white/60'}">${it}</div>`).join('')}
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
+            page.innerHTML = `<div class="mb-12"><span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">04 / SKILLS</span><div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line"></div></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-12"><div><h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-6">TECH STACK</h2><p class="opacity-60 mb-6">Expertise across software and embedded systems.</p><div class="p-8 rounded-[2rem] border font-mono text-[10px] bg-black/40 border-white/5 backdrop-blur-xl"><i data-lucide="terminal" class="mb-4 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}"></i><p class="text-slate-300">> loading_profile: Suranjan</p><p class="text-slate-300">> status: open_to_internships</p><p class="text-slate-300">> location: Asansol, IN</p><div class="mt-4 h-1 w-full bg-white/10 rounded-full"><div class="h-full ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} w-[85%]"></div></div></div></div><div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">${skillGroups.map(s => `<div class="p-8 rounded-[2rem] border transition-all ${glass} hover:scale-[1.02]"><div class="flex items-center gap-3 mb-6"><div class="p-2 rounded-lg ${isDark ? 'bg-limeAccent/10 text-limeAccent' : 'bg-orangeAccent/10 text-orangeAccent'}"><i data-lucide="${s.icon}" class="w-4 h-4"></i></div><h4 class="font-black uppercase tracking-widest text-[10px]">${s.cat}</h4></div><div class="flex flex-wrap gap-2">${s.items.map(it => `<div class="px-4 py-2 rounded-xl text-[10px] font-bold border border-white/10">${it}</div>`).join('')}</div></div>`).join('')}</div></div>`;
             lucide.createIcons();
         }
 
@@ -799,42 +761,85 @@
             const page = document.getElementById('page-Credentials'); if (!page || currentPage !== 'Credentials') return;
             const isDark = currentTheme === 'dark';
             const glass = isDark ? 'glass-panel-dark' : 'glass-panel-light';
+            page.innerHTML = `<div class="mb-12"><span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">05 / CREDENTIALS</span><div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line"></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="p-12 rounded-[3rem] border transition-all ${glass} hover:scale-[1.02] flex flex-col"><i data-lucide="graduation-cap" class="mb-8 w-10 h-10 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}"></i><h2 class="text-4xl font-black mb-8">Education</h2><div class="space-y-6"><div><h4 class="text-2xl font-black">B.Tech in ECE</h4><p class="opacity-60 text-sm">Asansol Engineering College</p><p class="font-black mt-2 text-sm ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}">2022 — 2026</p></div></div><div class="p-6 rounded-2xl border border-white/5 mt-auto"><span class="font-bold uppercase tracking-widest text-[10px]">Current CGPA</span><span class="text-2xl font-black block mt-1 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}">6.75</span></div></div><div class="p-12 rounded-[3rem] border transition-all ${glass} hover:scale-[1.02]"><i data-lucide="award" class="mb-8 w-10 h-10 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}"></i><h2 class="text-4xl font-black mb-8">Honors</h2><ul class="space-y-6">${["Smart India Hackathon (SIH) Participant", "JIS Celeb Top 25 (2025)", "College Technical Lead Candidate"].map(h => `<li class="flex items-start gap-4"><i data-lucide="check-circle-2" class="mt-1 w-5 h-5 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}"></i><span class="font-bold text-lg">${h}</span></li>`).join('')}</ul></div></div>`;
+            lucide.createIcons();
+        }
+
+        function renderContact() {
+            const page = document.getElementById('page-Contact'); if (!page || currentPage !== 'Contact') return;
             page.innerHTML = `
-                <div class="mb-12">
-                    <span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 mb-2 section-indicator">05 / CREDENTIALS</span>
-                    <div class="h-px w-12 ${isDark ? 'bg-limeAccent' : 'bg-orangeAccent'} accent-line transition-all duration-500"></div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                    <div class="p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 ${glass} flex flex-col">
-                        <i data-lucide="graduation-cap" class="mb-6 w-8 h-8 md:w-10 md:h-10 transition-colors duration-500 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}"></i>
-                        <h2 class="text-3xl md:text-4xl font-black mb-6 md:mb-8">Education</h2>
-                        <div class="space-y-6 flex-grow">
-                            <div>
-                                <h4 class="text-xl md:text-2xl font-black">B.Tech in ECE</h4>
-                                <p class="transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-darkTeal/70'} text-sm md:text-base">Asansol Engineering College</p>
-                                <p class="font-black mt-2 text-sm md:text-base transition-colors duration-500 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}">2022 — 2026</p>
+                <div class="w-full max-w-2xl mx-auto px-4 py-8">
+                    <div class="glass-composer rounded-[3rem] p-10 md:p-14 flex flex-col gap-8">
+                        <div>
+                            <span class="text-[10px] font-black tracking-[0.3em] uppercase opacity-50 text-white block mb-1">06 / GET IN TOUCH</span>
+                            <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white">COMPOSE MAIL</h2>
+                        </div>
+                        <form id="contactForm" class="space-y-6">
+                            <input type="text" id="name" required placeholder="Your Name" class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-limeAccent transition-all placeholder:text-white/20">
+                            
+                            <input type="email" id="email" required placeholder="Your Email" class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-limeAccent transition-all placeholder:text-white/20">
+                            
+                            <input type="text" id="subject" required placeholder="Enter Subject" class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-limeAccent transition-all placeholder:text-white/20">
+                            
+                            <textarea id="message" required rows="4" placeholder="Your Message" class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-limeAccent transition-all placeholder:text-white/20 resize-none"></textarea>
+                            
+                            <div class="flex flex-col gap-3">
+                                <button type="submit" class="w-full py-5 bg-limeAccent text-deepTeal rounded-2xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-limeAccent/20">
+                                    Submit <i data-lucide="send" class="w-4 h-4"></i>
+                                </button>
+                                <a href="https://drive.google.com/file/d/1gbRUxpDOE_sWssaCQsstIy4tbzdyUP01/view?usp=drive_link" target="_blank" class="w-full py-4 border border-white/10 rounded-2xl font-black uppercase tracking-widest text-[10px] text-white flex items-center justify-center gap-2 hover:bg-white/5 transition-colors">
+                                    <i data-lucide="download" class="w-4 h-4"></i> Download My CV
+                                </a>
                             </div>
-                        </div>
-                        <div class="p-5 md:p-6 rounded-2xl border flex justify-between items-center transition-all duration-500 ${isDark ? 'bg-limeAccent/5 border-limeAccent/10' : 'bg-white/60 border-white'} mt-6">
-                            <span class="font-bold uppercase tracking-widest text-[10px] md:text-xs">Current CGPA</span>
-                            <span class="text-xl md:text-2xl font-black transition-colors duration-500 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}">6.75</span>
-                        </div>
-                    </div>
-                    <div class="p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] border transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 ${glass}">
-                        <i data-lucide="award" class="mb-6 w-8 h-8 md:w-10 md:h-10 transition-colors duration-500 ${isDark ? 'text-limeAccent' : 'text-orangeAccent'}"></i>
-                        <h2 class="text-3xl md:text-4xl font-black mb-6 md:mb-8">Honors</h2>
-                        <ul class="space-y-4 md:space-y-6">
-                            ${["Smart India Hackathon (SIH) Participant", "JIS Celeb Top 25 (2025)", "College Technical Lead Candidate"].map(h => `
-                                <li class="flex items-start gap-4 group/item">
-                                    <i data-lucide="check-circle-2" class="mt-1 flex-shrink-0 w-5 h-5 transition-all duration-500 ${isDark ? 'text-limeAccent group-hover/item:scale-125' : 'text-orangeAccent group-hover/item:scale-125'}"></i>
-                                    <span class="font-bold text-base md:text-lg transition-all duration-300 group-hover/item:translate-x-1">${h}</span>
-                                </li>
-                            `).join('')}
-                        </ul>
+                        </form>
                     </div>
                 </div>
             `;
             lucide.createIcons();
+            initContactFormLogic();
+        }
+
+        function initContactFormLogic() {
+            const form = document.getElementById("contactForm");
+            if (!form) return;
+
+            form.addEventListener("submit", function(e){
+                e.preventDefault();
+
+                let data = {
+                    name: document.getElementById("name").value,
+                    email: document.getElementById("email").value,
+                    subject: document.getElementById("subject").value,
+                    message: document.getElementById("message").value
+                };
+
+                // UPDATED: Added your real Web App URL
+                const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyfCxaARItUzl768FAYiatgrcT_lt4iNbCr6U-zaruCxOm8PPAdEFvMCgjvFUaOfE0/exec";
+
+                fetch(WEB_APP_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(() => {
+                    showToastMsg("Your message has been submitted!");
+                    form.reset();
+                })
+                .catch(err => {
+                    showToastMsg("Error submitting data!");
+                    console.error(err);
+                });
+            });
+        }
+
+        function showToastMsg(msg) {
+            const toast = document.getElementById('email-toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
         }
 
         function renderFooter() {
@@ -843,7 +848,7 @@
             const glass = isDark ? 'glass-panel-dark' : 'glass-panel-light';
             if (footer) footer.className = `w-full max-w-7xl mx-auto px-6 py-4 mt-6 border-t transition-all duration-700 ${isDark ? 'border-white/10' : 'border-darkTeal/10'}`;
             document.querySelectorAll('.footer-social-btn').forEach(el => {
-                el.className = `p-2.5 rounded-xl transition-all duration-300 hover:scale-110 hover:-translate-y-1 hover:${isDark ? 'text-limeAccent' : 'text-orangeAccent'} footer-social-btn ${glass} ${isDark ? 'text-white' : 'text-darkTeal'}`;
+                el.className = `p-2.5 rounded-xl transition-all duration-300 hover:scale-110 footer-social-btn ${glass} ${isDark ? 'text-white' : 'text-darkTeal'}`;
             });
             const progressContainer = document.getElementById('progress-container');
             if(progressContainer) progressContainer.className = `w-32 h-1.5 rounded-full overflow-hidden backdrop-blur-md transition-colors duration-500 ${isDark ? 'bg-white/10' : 'bg-darkTeal/10'}`;
